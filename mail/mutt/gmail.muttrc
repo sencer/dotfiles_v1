@@ -1,0 +1,11 @@
+set realname="Sencer"
+set from=sencerselcuk@gmail.com
+set spoolfile = +gmail/INBOX
+set postponed = +gmail/Drafts
+set record    = +gmail/SentMail
+set trash     = +gmail/DeletedItems
+macro index,pager e <save-message>=+AllMail
+# macro index d "<modify-labels>+\\\Trash -inbox -unread\n<delete-message>"
+macro index,pager <F5> "!offlineimap -o -a Gmail"
+
+# vi: ft=muttrc

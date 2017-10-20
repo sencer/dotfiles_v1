@@ -1,0 +1,498 @@
+# vi: ft=tcl
+
+# display presets
+proc set_preset { preset {molid top} } {
+  delete_reps $molid
+  show_$preset $molid
+  return 0
+}
+
+proc show_dynamic { molid } {
+
+  mol color Element
+  mol selection all
+
+  mol representation VDW 0.3 18.0
+  mol addrep $molid
+
+  mol representation DynamicBonds 2.3 0.1 16.0
+  mol selection noh and within 2.3 of name Ti Fe Co Ni Al
+  mol addrep $molid
+
+  mol representation DynamicBonds 1.7 0.1 16.0
+  mol selection noh
+  mol addrep $molid
+
+  mol representation DynamicBonds 1.2 0.1 16.0
+  mol selection all
+  mol addrep $molid
+
+  if { [molinfo $molid get filetype] == "cube" } {
+    mol representation Isosurface  0.01 0 0 0 1 1
+    mol color ColorID 0
+    mol addrep $molid
+
+    mol representation Isosurface -0.01 0 0 0 1 1
+    mol color ColorID 4
+    mol addrep $molid
+  }
+}
+
+proc show_cpk { molid } {
+
+  mol color Element
+  mol selection all
+
+  mol representation CPK 1.2 0.6 12.0 12.0
+  mol addrep $molid
+
+  if { [molinfo $molid get filetype] == "cube" } {
+    mol representation Isosurface  0.01 0 0 0 1 1
+    mol color ColorID 0
+    mol addrep $molid
+
+    mol representation Isosurface -0.01 0 0 0 1 1
+    mol color ColorID 4
+    mol addrep $molid
+  }
+}
+
+# utility functions
+proc center_sel { sel } {
+  global shift
+  set molid [$sel molid]
+  set all [atomselect $molid all]
+
+  set r [vecsub [vecadd "$shift($molid,0) $shift($molid,1) $shift($molid,2)"\
+    [vecscale 0.5 [molinfo $molid get {a b c}]]] \
+    [measure center $sel] \
+    ]
+
+  $all moveby $r
+  return 0
+}
+
+proc generate_filename { basename extension } {
+# generate a basename.i.ext such that it doesn't already exist
+
+  # if basename is {} as in the topotool generated new molecule
+  if { $basename eq "{}" } {
+    set basename vmd
+  }
+
+  set tmp "$basename.$extension"
+
+  set i 1
+  while { [ file exists "$tmp" ] } {
+    set tmp "$basename.$i.$extension"
+    incr i
+  }
+  return $tmp
+}
+
+proc framedo {molid dowhat args} {
+  set nf [molinfo $molid get numframes]
+  for {set i 0} {$i<$nf} {incr i} {
+    molinfo $molid set frame $i
+    catch {
+      $dowhat {*}$args
+    }
+  }
+}
+
+proc save_xyz { sel fname {all 0}} {
+  global shift
+  set molid [$sel molid]
+  set fildes [open $fname w]
+
+  if { $all } {
+    set first 0
+    set last [molinfo $molid get numframes]
+    puts "Writing all frames. This might take some time."
+  } else {
+    set first [molinfo $molid get frame]
+    set last [expr $first+1]
+  }
+
+  for {set fr $first} {$fr < $last} {incr fr} {
+    molinfo $molid set frame $fr
+    puts $fildes [$sel num]
+    if { [molinfo $molid get a] > 0 } {
+      puts $fildes "celldm [molinfo $molid get {a b c alpha beta gamma}]"
+    }
+
+    foreach atom [$sel get {element x y z}] {
+      puts $fildes [ \
+        format "%-4s %14.10f %14.10f %14.10f" [lindex $atom 0] \
+        [expr [lindex $atom 1] - $shift($molid,0)] \
+        [expr [lindex $atom 2] - $shift($molid,1)] \
+        [expr [lindex $atom 3] - $shift($molid,2)] \
+        ]
+    }
+  }
+
+  close $fildes
+  puts "Written $fname"
+  return 0
+}
+
+proc set_xyz_cell { molid {var 0} } {
+
+  set fname [molinfo $molid get filename]
+  if { ![file readable $fname] } {
+  # if file is not readable inform and die
+    puts "File $fname not readable."
+    return 1
+  }
+
+  set fil [open $fname r]
+  set nat [gets $fil]
+
+  # read the comment line
+  set dm [gets $fil]
+  set ldm [llength $dm]
+  if { [lindex $dm 0] == "celldm" && ($ldm == 4 || $ldm == 7) } {
+    pbc set "[lrange $dm 1 end]" -molid $molid -all
+  } else {
+    puts "File doesn't contain pbc information, at least for the first frame"
+  }
+
+  # flag to keep if all frames are OK
+  set flag 0
+  if { $var } {
+  # cell dimension is variable, read all frames
+    puts "Reading pbc information for all frames. This might take some time"
+
+    set nf [molinfo $molid get numframes]
+    set curframe [molinfo $molid get frame]
+
+    for {set frame 1} {$frame < $nf} {incr frame} {
+
+      for {set i 0} {$i < $nat} {incr i} {
+        if { [gets $fil line] == -1 } {
+          puts "Unexpected EOF."
+          molinfo $molid set frame $curframe
+          return 1
+        }
+      }
+
+      set nat [gets $fil]
+      set dm [gets $fil]
+      set ldm [llength $dm]
+      if { [lindex $dm 0] == "celldm" && ($ldm == 4 || $ldm == 7) } {
+        if { $ldm == 4 } {
+          set dm "$dm 90 90 90"
+        }
+        molinfo $molid set frame $frame
+        molinfo $molid set { a b c alpha beta gamma } [lrange $dm 1 end]
+      } else {
+        set flag 1
+      }
+    }
+    molinfo $molid set frame $curframe
+  }
+  close $fil
+  return $flag
+}
+
+proc search_saved_reps {} {
+  global env
+  set dir [pwd]
+
+  while { ![file exists $dir/view.vmd] } {
+    set dir [file normalize $dir/..]
+    if { $dir == [file normalize $env(HOME)/..] } {
+      return "view.vmd"
+    }
+  }
+  return "$dir/view.vmd"
+}
+
+proc save_reps {{pbc 0}} {
+
+  global shift
+
+  set fname [search_saved_reps]
+  set fildes [open $fname w]
+
+  set nummols [llength [molinfo list]]
+  set prefix " "
+  set cond " if"
+
+  puts $fildes "display resize [display get size]"
+  puts $fildes ""
+
+  if { [llength [array get shift]] > 0 } {
+    puts $fildes "global shift"
+    puts $fildes "array set shift {[array get shift]}"
+    puts $fildes ""
+  }
+
+  puts $fildes "proc load_saved_reps {molid} {"
+  puts $fildes ""
+  foreach mol [molinfo list] {
+    if { $nummols > 1 } {
+    # if there is only one molecule, save the reps without requiring that
+    # the loading molecule has to be first molecule
+      puts $fildes " $cond { \$molid == $mol } \{"
+      set prefix "   "
+      set cond "elseif"
+    }
+    # first delete the representations of the molecule
+    puts $fildes "$prefix delete_reps \$molid"
+    puts $fildes ""
+
+    # put each representation, if they are periodic and if they are on
+    set nrep [molinfo $mol get numreps]
+    for {set i 0} {$i < $nrep} {incr i} {
+      puts $fildes "$prefix mol representation [join [molinfo $mol get "{rep $i}"]]"
+      puts $fildes "$prefix mol color [join [molinfo $mol get "{color $i}"]]"
+      puts $fildes "$prefix mol selection [join [molinfo $mol get "{selection $i}"]]"
+      puts $fildes "$prefix mol material [join [molinfo $mol get "{material $i}"]]"
+      puts $fildes "$prefix mol addrep \$molid"
+
+      set sp [mol showperiodic $mol $i]
+      if {[string length $sp]} {
+        puts $fildes "$prefix mol showperiodic \$molid $i $sp"
+        puts $fildes "$prefix mol numperiodic \$molid $i [mol numperiodic $mol $i]"
+      }
+
+      if { ![mol showrep $mol $i] } {
+        puts $fildes "$prefix mol showrep \$molid $i 0"
+      }
+      puts $fildes ""
+    }
+
+
+    # put display matrices
+    puts $fildes "$prefix molinfo \$molid set center_matrix {[molinfo $mol get center_matrix]}"
+    puts $fildes "$prefix molinfo \$molid set rotate_matrix {[molinfo $mol get rotate_matrix]}"
+    puts $fildes "$prefix molinfo \$molid set scale_matrix {[molinfo $mol get scale_matrix]}"
+    puts $fildes "$prefix molinfo \$molid set global_matrix {[molinfo $mol get global_matrix]}"
+    if { $pbc && [molinfo $mol get a] > 0 } {
+      puts $fildes "$prefix pbc set [pbc get -now -molid $mol] -molid \$molid -all"
+    }
+
+    if { $nummols > 1 } {
+    # if there are more than one molecules, save the drawn/active props as well
+      if {![molinfo $mol get drawn]} {
+        puts $fildes "    molinfo \$molid set drawn 0"
+      }
+
+      if {![molinfo $mol get active]} {
+        puts $fildes "    molinfo \$molid set active 0"
+      }
+
+      if {[molinfo $mol get fixed]} {
+        puts $fildes "    molinfo \$molid set fixed 1"
+      }
+      puts $fildes "$prefix return 0"
+      puts -nonewline $fildes "  \}"
+    }
+  }
+
+  puts $fildes ""
+  if { $nummols > 1 } {
+    puts $fildes "  return 1"
+  } else {
+    puts $fildes "  return 0"
+  }
+  puts $fildes "}"
+  close $fildes
+  puts "Written to $fname"
+  return 0
+}
+
+proc delete_reps { molid } {
+
+  set nrep [molinfo $molid get numreps]
+
+  for {set i 0} {$i < $nrep} {incr i} {
+    mol delrep 0 $molid
+  }
+
+  return 0
+}
+
+proc shift_axis { axis dir } {
+# change the origin of unit cell, and wrap the atoms properly
+# works on "top" molecule, change the top as necessary in ui
+
+  global shift
+
+  set topmol [molinfo top]
+
+  if { ! [info exists shift($topmol,0)] } {
+    set shift($topmol,0) 0
+    set shift($topmol,1) 0
+    set shift($topmol,2) 0
+  }
+
+  set shift($topmol,$axis) [expr $shift($topmol,$axis) + $dir*0.1]
+
+  pbc wrap -shiftcenter "$shift($topmol,0) $shift($topmol,1) $shift($topmol,2)"
+  pbc box  -shiftcenter "$shift($topmol,0) $shift($topmol,1) $shift($topmol,2)"
+
+  return 0
+}
+
+proc shift_cell { x y z } {
+  shift_axis 0 [expr $x*10]
+  shift_axis 1 [expr $y*10]
+  shift_axis 2 [expr $z*10]
+  return 0
+}
+
+proc unwrap {{molid top}} {
+
+  # wrap to avoid double unwrapping
+  pbc wrap -molid $molid -now
+
+  # save current frame to a file
+  set tmp [exec mktemp --suffix .xyz]
+  set all_current_frame [atomselect $molid all]
+  save_xyz $all_current_frame $tmp
+
+  # use an external program to decide unwrapping
+  set source_file [exec vmd_unwrap $tmp]
+  source $source_file
+
+  # update the bonding information
+  mol bondsrecalc $molid
+  mol reanalyze $molid
+
+  # remove the files
+  file delete -force $tmp $source_file
+
+  # free memory & return
+  $all_current_frame delete
+  return 0
+}
+
+proc numfrags {{molid top}} {
+  set sel [atomselect $molid all]
+  set nfrag [lindex [lsort -integer -uniq [$sel get fragment]] end]
+  $sel delete
+  return [expr $nfrag+1]
+}
+
+# do initialization
+
+menu main on
+proc initialize_vmd {} {
+# initialize in a proc, so it doesn't clutter VMD console
+
+  display projection orthographic
+  display nearclip set 0
+  display depthcue off
+
+  axes location off
+  color Display Background white
+
+  user add key q { exit }
+  user add key f { save_xyz [atomselect top all] [generate_filename \
+                   [file tail [file rootname [molinfo top get filename]]] xyz] }
+
+  user add key F { save_xyz [atomselect top all] [generate_filename \
+                   [file tail [file rootname [molinfo top get filename]]] xyz] 1}
+
+  user add key P { render POV3 [generate_filename \
+                   [file tail [file rootname [molinfo top get filename]]] pov] }
+  render options POV3 { povray +W%w +H%h -I%s -O%s.png -D -X +A +UA +FN }
+
+  user add key a { save_reps }
+  user add key A { save_reps 1 }
+
+  user add key F1 { set_preset dynamic }
+  user add key F2 { set_preset cpk }
+
+  # manage pbc tools
+
+  user add key W { 
+    set t [molinfo top]
+    pbc wrap -all -shiftcenter "$shift($t,0) $shift($t,1) $shift($t,2)"
+  }
+
+  user add key w {
+    set t [molinfo top]
+    pbc wrap -shiftcenter "$shift($t,0) $shift($t,1) $shift($t,2)"
+  }
+
+  user add key u { unwrap top }
+
+  user add key o { pbc box -toggle }
+
+  user add key Right { shift_axis 0  1 }
+  user add key Left  { shift_axis 0 -1 }
+  user add key End   { shift_axis 1  1 }
+  user add key Home  { shift_axis 1 -1 }
+  user add key Up    { shift_axis 2  1 }
+  user add key Down  { shift_axis 2 -1 }
+
+  # color definitions
+  color change rgb 33 0.3 0.3 0.3
+  catch { color Element C 33 }
+  catch { color Name O pink }
+  catch { color Name Ti white }
+  catch { color Element Ti silver }
+  catch { color Element Ni silver }
+  catch { color Element Co silver }
+  catch { color Element Al gray }
+  catch { color Element Nb green }
+  catch { color Element Na green }
+
+  color Labels Bonds black
+  color Labels Angles blue
+
+  animate style Rock
+
+  # check if there is a view.vmd file in the directory tree, and load if exists
+  set repsfile [search_saved_reps]
+  if { [file readable $repsfile] } {
+    source $repsfile
+  }
+
+}
+
+proc init_mol_proxy {dummy molid dummy2} {
+  global vmd_initialize_structure
+  eval "after idle {if {$vmd_initialize_structure($molid)} {initialize_molecule $molid}}"
+}
+
+proc initialize_molecule {molid} {
+
+  if { [info command load_saved_reps] == "" || \
+       [load_saved_reps $molid] } {
+       # if view.vmd is not sourced, or if the sourced file does not apply
+       # to the current molecule set dynamic preset.
+    set_preset dynamic $molid 
+  }
+
+  global shift
+  if { ! [info exists shift($molid,0)] } {
+    set shift($molid,0) 0
+    set shift($molid,1) 0
+    set shift($molid,2) 0
+  }
+
+
+  if { [molinfo $molid get filetype] == "xyz" && ![molinfo $molid get a] } {
+  # if this is an xyz file and doesn't have pbc set already try
+  # checking the comment strings
+    set_xyz_cell $molid
+  }
+}
+
+after idle {
+  initialize_vmd
+
+  foreach molid [molinfo list] {
+    initialize_molecule $molid
+  }
+
+  trace variable vmd_initialize_structure w init_mol_proxy
+
+  global env auto_path
+  lappend auto_path "$env(HOME)/.dotfiles/vmd"
+  VisualSelect::Initialize
+}

@@ -1,0 +1,4 @@
+#compdef vmd
+
+_arguments \
+  "*::chemical structure:_files -g '((#i)*.(xyz|pdb|cif|cube|lammpstrj)|(input.txt|output.txt))(-.Od)'" && return 0

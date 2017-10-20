@@ -1,0 +1,24 @@
+#!/usr/bin/env python2.7
+# encoding: utf-8
+
+import os
+import sys
+import pynotify
+
+args = sys.argv
+
+
+def clipboard(a, b):
+    os.system("echo '%s'|DISPLAY=:1 xsel -bi" % args[2])
+    return True
+
+
+pynotify.init('SlurmManager')
+notification = pynotify.Notification('Job Completed',
+                                     'Job %s on %s is completed.' % (args[1], args[3]))
+notification.set_urgency(pynotify.URGENCY_CRITICAL)
+notification.set_timeout(2000)
+notification.add_action("attr", "Copy path", clipboard)
+notification.show()
+
+clipboard(1, 2)

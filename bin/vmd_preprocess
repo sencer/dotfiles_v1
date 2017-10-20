@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# generate temprorary files that are readable by VMD for those that are not
+# then replace the VMD arguments with the new files
+
+args=""
+files=""
+
+generate_tmp_file() {
+  # $1 input file
+  # $2 output extension
+  # $3 adapter
+  # can add $4 if the adapter outputs to a file, not a stdout if necessary
+  file=$(mktemp -t $1.XXXXXX --suffix .$2)
+  args="$args $file"
+  files="$files $file"
+  eval "$3 $1 > $file"
+}
+
+while (( $# )); do
+  if [[ $1 == *input.txt ]]; then
+    generate_tmp_file "$1" xsf pwi2xsf
+  elif [[ $1 == *output.txt ]]; then
+    generate_tmp_file "$1" xsf "pwo2xsf -a"
+  elif [[ $1 == --pwi ]]; then
+    shift
+    generate_tmp_file "$1" xsf pwi2xsf
+  elif [[ $1 == --pwo ]]; then
+    shift
+    generate_tmp_file "$1" xsf "pwo2xsf -a"
+  elif [[ $1 == --pwl ]]; then
+    # pwo, last coor
+    shift
+    generate_tmp_file "$1" xsf "pwo2xsf -lc"
+  else
+    args="$args $1"
+  fi
+  shift
+done
+
+vmd ${args[@]}
+
+function clean_files {
+  if [[ -n "$@" ]]; then
+    rm -f $@
+  fi
+}
+trap "clean_files ${files[@]}" EXIT

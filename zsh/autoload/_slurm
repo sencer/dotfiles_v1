@@ -1,0 +1,43 @@
+#compdef sbatch squeue scancel q
+
+# if an argument is already in the command line, do not suggest it again
+zstyle ':completion:*:scancel:*' ignore-line yes
+
+_slurm_complete() {
+  local curcontext="$curcontext" context state line
+  typeset -A opt_args
+
+  case $service in
+    sbatch )
+      _arguments -s -S \
+        '-d:\% on:->depjob' \
+        "*:Job File:_files -g '(#i)*.job(-.)'" && return 0
+      if [[ $state == depjob ]]; then
+        _values -S : -w option \
+          'afterany:Job Id:_get_jobs' \
+          'afterok:Job Id:_get_jobs'
+      fi
+      ;;
+    squeue )
+      _arguments \
+        '-u $USER'\
+        '*-j+:Job Id:_get_jobs'\
+        '-h[no header]'\
+        '-i[Iterate, n seconds]:' \
+        '-l[long]'\
+        '-o[output format]:Formats' # can use values here.
+      ;;
+    * )
+      _arguments \
+        '*:Job Id:_get_jobs'
+      ;;
+  esac
+}
+
+_get_jobs() {
+  local arr
+  arr=($(_call_program alias "squeue -h -o \'%i:%j\(%T\)\' -u sselcuk"))
+  _describe "Job Id" arr
+}
+
+_slurm_complete "$@"

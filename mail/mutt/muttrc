@@ -1,0 +1,218 @@
+# Who am I
+alternates 'sselcuk@.*princeton.edu' 'sencerselcuk@gmail.com' 'sencer@alumni.princeton.edu'
+
+set folder = "$HOME/.mail/"
+mailboxes "=princeton/INBOX" "=gmail/INBOX" "+gmail/AllMail" \
+          "+gmail/BuildingNotifications" "+gmail/Drafts" "+gmail/Maintenance" \
+          "+gmail/Package" "+gmail/PsiK" "+gmail/SentMail" "+gmail/Starred" \
+          "+princeton/DeletedItems" "+princeton/Drafts"  "+princeton/JunkEMail"\
+          "+princeton/Outbox" "+princeton/SentItems" "+gmail-old/AllMail" \
+          "+princeton-old/2011" "+princeton-old/2012" "+princeton-old/2013" \
+          "+princeton-old/2014" "+princeton-old/2015" "+princeton-old/2016" \
+          "+princeton-old/Archives" "+princeton-old/DeletedItems" \
+          "+princeton-old/INBOX" "+princeton-old/SentItems"
+
+# default settings are princeton
+source princeton.muttrc
+
+folder-hook gmail.* source $HOME/.mutt/gmail.muttrc
+folder-hook princeton.* source $HOME/.mutt/princeton.muttrc
+
+set header_cache     = ~/.cache/mutt/
+set message_cachedir = ~/.cache/mutt/
+set nomove
+
+# collapse all threads, uncollapse unreads
+set collapse_all
+unset collapse_unread
+
+# use msmtp for sending email
+set sendmail="/usr/bin/msmtp"
+set use_from=yes
+set envelope_from=yes
+
+# mail writing settings
+set editor = "nvim -S '~/.mutt/mutt.vim' -c 'startinsert'"
+set text_flowed
+set reflow_text
+set wrap=78
+set reflow_wrap=78
+set nosig_dashes
+set sig_on_top
+set signature = 'echo "\nBest,\nSencer"|'
+# set signature = 'echo "\nSencer\n" |'
+set abort_nosubject = ask-yes
+
+set forward_quote
+set forward_format = "Fwd: %s"
+set include
+set attribution = "On %d, %n wrote:"
+
+# jump into writing the email
+set autoedit
+set fast_reply
+set edit_headers
+
+# mail exporting
+set pipe_decode
+set pipe_sep = "\n#### NEXT E-MAIL ####\n"
+
+# sidebar
+# set sidebar_width   = 20
+# set sidebar_visible = yes
+# macro index \Cp "<sidebar-prev><sidebar-open>" "Open prev mail box"
+# macro index \Cn "<sidebar-next><sidebar-open>" "Open next mail box"
+
+# key bindings
+bind index,pager a group-reply
+
+bind index       g first-entry
+bind index       G last-entry
+bind pager       g top
+bind pager       G bottom
+
+bind index,pager       J next-thread
+bind index,pager       K previous-thread
+
+bind index - collapse-thread
+bind index _ collapse-all
+
+# Saner copy/move dialogs
+macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+
+# use notmuch for searches
+bind index,pager / vfolder-from-query
+bind index,pager + entire-thread
+bind index,pager L modify-labels
+
+bind attach <return>    view-mailcap
+
+# how to show mail
+alternative_order text/plain text/enriched text/html 
+ignore *
+unignore from date subject data to cc
+auto_view text/html
+auto_view application/msword
+
+set wrap = 78
+set narrow_tree
+set ignore_linear_white_space
+
+# threads with newest on top
+set sort=threads
+set strict_threads=yes
+set sort_aux=reverse-last-date-received
+
+# pager settings
+set pager_context=2
+set tilde
+set pager_index_lines=10
+set pager_stop
+
+# do not beep on error, but when new mail arrives
+set nobeep
+set beep_new
+set auto_tag
+set noconfirmappend
+
+# don't bug unnecessarily
+set nowait_key
+set quit
+set delete
+
+# index
+set uncollapse_jump #jump to first unread in the thread.
+
+set menu_scroll
+# set query_command = "~/bin/ph %s 2>/dev/null"
+# set ispell="aspell -e -c"
+# set arrow_cursor if set, reverse fg/bg colors
+#
+# history
+set history = 1000
+set save_history = 1000
+set history_file = ~/.cache/mutt/mutt_history
+
+# aliases
+set alias_file   = ~/.mutt/aliases
+set reverse_alias
+source $alias_file
+
+# theme
+#     field      foreground  background
+color normal     color223    color235 # main colors
+color indicator  color229    color239 # cursor line
+color tree       color223    color235 # thread arrows
+
+color index      color223 color235 ~A # all messages
+color index      color223 color237 ~v # messages flagged
+color index      color229 color66  ~N # new messages
+color index      color229 color109 ~O # old messages, i.e. new but seen before
+color index      color229 color124 ~D # messages marked for deletion
+color index      color229 color106 ~T # messages tagged
+color index      color229 color208 ~F # messages flagged
+
+color markers    color223 color235
+color quoted     color246 color234
+color attachment color214 color235
+color status     color250 color66
+color tilde      color223 color234
+color error      color124 color235
+color message    color132 color235
+color signature  color250 color235
+
+color hdrdefault color223 color235
+color header     color167 color235 ^(Cc|Reply-To):
+
+color body       color142 color234 [\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+
+color body       color142 color234 (https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+
+# color bold       color039 color254
+# color underline  color141 color254
+
+set nomarkers
+set date_format     = "[%m/%d/%y] [%I:%M%P]"
+set folder_format="%2C %t %N %8s %d %f"
+set index_format = "%3C [%Z] %D %-20.18F //   %s"# "%?X?[%X]& ?" for attachments.
+set alias_format    = "%4n %t %-20a %r"
+set status_format = "%r--[%f]--[Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del\
+:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%\
+P)---"
+set status_on_top
+set status_chars = " +%A"
+set to_chars = " >~c<l"
+
+# crypto
+set crypt_replysign= yes
+set crypt_replysignencrypted= yes
+set pgp_autoinline      = no
+set pgp_auto_decode     = yes
+set pgp_check_exit      = yes
+set pgp_entry_format    = "%4n %t%f %4l/0x%k %-4a %2c %u"
+set pgp_good_sign       = "Good signature from"
+set pgp_ignore_subkeys  = yes
+set pgp_long_ids        = no # mutt uses full fingerprint internally
+set pgp_mime_auto       = no
+set pgp_replyinline     = no
+set pgp_retainable_sigs = yes
+set pgp_show_unusable   = no
+set pgp_sign_as         = "Sencer Selcuk"
+set pgp_sort_keys       = address
+set pgp_strict_enc      = yes
+set pgp_timeout         = 21600 # Remember PGP passphrase for 6 hours
+
+
+set pgp_use_gpg_agent        = yes
+set pgp_decode_command       = "gpg2 --status-fd=2 %?p?--passphrase-fd 0? --quiet --batch --output - %f"
+set pgp_decrypt_command      = "gpg2 --status-fd=2 %?p?--passphrase-fd 0? --quiet --batch --output - %f"
+set pgp_encrypt_only_command = "/opt/software/neomutt/pgpewrap gpg2 --batch --quiet --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
+set pgp_encrypt_sign_command = "/opt/software/neomutt/pgpewrap gpg2 %?p?--passphrase-fd 0? --batch --quiet --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+set pgp_encrypt_sign_command = "/opt/software/neomutt/pgpewrap gpg2 %?p?--passphrase-fd 0? --batch --quiet --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+set pgp_export_command       = "gpg2 --export --armor %r"
+set pgp_getkeys_command      = "gpg --search-keys %r"
+set pgp_import_command       = "gpg2 --import -v %f"
+set pgp_list_pubring_command = "gpg2 --with-colons --with-fingerprint --list-keys %r"
+set pgp_list_secring_command = "gpg2 --with-colons --with-fingerprint --list-secret-keys %r"
+set pgp_sign_command         = "gpg2 --comment 'I welcome encrypted mail.' --batch --output - %?p?--passphrase-fd 0? --armor --detach-sign --textmode %?a?-u %a? %f"
+set pgp_verify_command       = "gpg2 --status-fd=2 --quiet --batch --output - --verify %s %f"
+set pgp_verify_key_command   = "gpg2 --verbose --batch --fingerprint --check-sigs %r"

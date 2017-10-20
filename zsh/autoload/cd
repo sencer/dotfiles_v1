@@ -1,0 +1,19 @@
+# vi: ft=zsh
+if builtin cd $@ 2> /dev/null; then
+  return 0
+elif builtin cd "${1%/*}" 2> /dev/null; then
+  echo "Folder not found, entered into parent directory"
+  return 0
+fi
+
+if [[ -n $CURRENTSERVER ]]; then
+  local jobd
+  jobd=$(squeue -o \'%j %Z\' -u $USER -h|command grep "^$1"|cut -d' ' -f2|\
+    sed "s[.*sselcuk[$HOME/$CURRENTSERVER/gpfs[")
+  if test -n "$jobd" && builtin cd "$jobd" 2> /dev/null; then
+    eval "${1}='${PWD}'"
+    echo "Entering job directory, and saving it for the session"
+    return 0
+  fi
+fi
+return 1

@@ -1,0 +1,10 @@
+set realname  = "Sencer Selcuk"
+set from      = sselcuk@princeton.edu
+set spoolfile = +princeton/INBOX
+set postponed = +princeton/Drafts
+set record    = +princeton/SentItems
+set trash     = +princeton/DeletedItems
+macro index,pager e <save-message>=+Archives.`date +%Y`\n
+macro index,pager <F5> "!offlineimap -o -a Princeton"
+
+# vi: ft=muttrc

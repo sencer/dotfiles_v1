@@ -1,0 +1,57 @@
+#!/bin/bash
+get_stats() {
+   awk  -vn=$n '
+        func abs(x) { return (x<0) ? x*-1 : x }
+        func max(a,b,c,d) {
+#         f = sqrt(b*b+c*c+d*d)
+#         return (a<f)?f:a
+          if (fixed[$2] ==  1) return a
+          b = abs(b); c = abs(c); d = abs(d)
+          if(a < b) a = b
+          if(a < c) a = c
+          if(a < d) a = d
+          return a
+        }
+        function p(){
+          maxd = -1
+          rmsd = 0
+          for ( i = 0; i < nat; i++ ) {
+            getline
+            if(!flag) {
+              if (NF > 4) fixed[++atom] = 1
+            }
+            sd = 0
+            for ( j =2; j<5; j++ ) {
+              sd += ($j - old[i][j])^2
+              old[i][j] = $j
+            }
+            if(maxd<sd) maxd=sd
+            rmsd += sd
+          }
+          flag = 1
+          if(tot%20==1) print "Run SCF ION    t     T   TOT FORCE CORR% MAXFORCE   RMSD    MAXDISP    ENERGY (Ry)     ENERGY (eV)" > "/dev/stderr"
+          printf "%-3d %3d %3d %5.2f %5.1f %9.6f %5.2f %9.6f %8.5f %8.5f %16.8f %16.8f\n", run, scf, ionic, t, T, force, corr, maxf, (rmsd>1000)?0:sqrt(rmsd/nat), (rmsd>1000)?0:sqrt(maxd), e, e*13.6056923
+        }
+        {
+          switch($0) {
+            case /number of atoms/: nat=$5; break
+            case /starts/: run++; break
+            case /!/: e = $5; break
+            case /temperature/: T = $3; break
+            case /convergence has been/: scf = $6; maxf = 0; break
+            case /Total force/: force = $4; corr = $9/$4*100; break
+            case /pico-seconds/: t = $3; break
+            case /number of bfgs/: ionic = $6; tot++; break
+            case /Entering Dynamics/:  ionic = $5; tot++;break
+            case /atom.*force =/: maxf = max(maxf, $7, $8, $9); break
+            case /ATOMIC_POSITIONS/: p(); break
+            default: break
+          }
+        }'
+}
+
+if [[ -t 0 ]]; then
+  cat ${1-output.txt} | get_stats
+else
+  cat /dev/stdin | get_stats
+fi
