@@ -40,11 +40,12 @@ Plug 'kassio/neoterm'
 Plug 'tpope/vim-dispatch'
 Plug 'radenling/vim-dispatch-neovim'
 " if has('nvim')
-  Plug 'roxma/nvim-completion-manager'
-  Plug 'roxma/ncm-clang'
-  if !has('nvim')
-    Plug 'roxma/vim-hug-neovim-rpc'
-  endif
+Plug 'roxma/nvim-completion-manager'
+Plug 'roxma/ncm-clang'
+if !has('nvim')
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+" Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 " else
   " Plug 'maralla/completor.vim'
 " endif
@@ -121,6 +122,16 @@ let g:neoterm_direct_open_repl = 1
 nnoremap <F2> :TREPLSendLine<CR>
 vnoremap <F2> :TREPLSendSelection<CR>
 nnoremap <F3> :TREPLSendFile<CR>
+
+" " LSP
+" let g:LanguageClient_autoStart = 1
+" let g:LanguageClient_serverCommands = {
+"       \ 'python': ['pyls']
+"       \ }
+" " <leader>ld to go to definition
+" autocmd FileType python nnoremap <buffer> gd :call LanguageClient_textDocument_definition()<cr>
+" autocmd FileType python nnoremap <buffer> <Leader>k :call LanguageClient_textDocument_hover()<cr>
+" autocmd FileType python nnoremap <buffer> <Leader>r :call LanguageClient_textDocument_rename()<cr>
 
 " ale
 let g:ale_sign_column_always = 1
@@ -336,6 +347,10 @@ augroup vimrc
         \ let b:closer_flags = '([{'
 
   autocmd vimrc BufWritePost $MYVIMRC source %
+
+  autocmd vimrc BufRead,BufNewFile *.xyz,*.lammpstrj
+        \ setlocal equalprg=asort\ -k1r,4,2,3 |
+        \ setlocal formatprg=$HOME/.config/nvim/bin/heuristic-format
 
   if has('nvim')
     autocmd vimrc BufRead,BufNewFile * exec ':Tmap '. &makeprg

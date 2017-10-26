@@ -2,7 +2,7 @@
 # zsh completion won't work if squeue is an alias
 
 if [[ $CURRENTSERVER ]]; then
-  ssh $CURRENTSERVER SQUEUE_FORMAT=\'%10A %3t %.2D:%2c  %16j %10L %12S %Z\' SLURM_TIME_FORMAT=\'%T %a\' squeue $@
+  ssh -q $CURRENTSERVER SQUEUE_FORMAT=\'%10A %3t %.2D:%2c  %16j %10L %12S %Z\' SLURM_TIME_FORMAT=\'%T %a\' squeue $@
 else
   exit 1
 fi

@@ -42,8 +42,8 @@ while (( $# > 0 )); do
   file_path="${1:A}"
   extract_dir="${file_name:r}"
   case "$1:l" in
-    (*.tar.gz|*.tgz) tar xvzf "$1" ;;
-    (*.tar.bz2|*.tbz|*.tbz2) tar xvjf "$1" ;;
+    (*.tar.gz|*.tgz) tar xvf "$1" ;;
+    (*.tar.bz2|*.tbz|*.tbz2) tar xvf "$1" ;;
     (*.tar.xz|*.txz) tar --xz --help &> /dev/null \
       && tar --xz -xvf "$1" \
       || xzcat "$1" | tar xvf - ;;

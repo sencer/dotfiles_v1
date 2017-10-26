@@ -1,0 +1,112 @@
+#!/usr/bin/env ruby
+require 'optparse'
+
+# function definitions
+def to_arr str
+  str.split(' ').map{|v| Float(v) rescue v} 
+end
+
+def cmpfunc x, y
+  # return 0 if Numeric and close, else compare as usual
+  (x.is_a? Numeric and (x-y).abs < $res) ? 0 : x <=> y 
+end
+
+def print_range arr
+  arr.each{|l| puts l}
+end
+
+options = {
+  inplace: false,
+  resolution: 0.1,
+  keys: ['1'],
+  lines: [1, nil]
+}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: asort [options] file"
+
+  opts.on("-i", "--inplace", "Overwrite the current file") do |v|
+    options[:inplace] = true
+  end
+
+  opts.on("-s", "--start line", Integer, "Start line [first line]") do |v|
+    options[:lines][0] = v
+  end
+
+  opts.on("-e", "--end line", Integer, "End line [last line]") do |v|
+    options[:lines][1] = v
+  end
+
+  opts.on("-r", "--resolution [Float]", Float,
+          "Differences will be ignored below this value [0.1]") do |v|
+    options[:resolution] = v || 0.01
+  end
+
+  opts.on("-k", "--keys [KEYS]", Array,
+          "Ordered sort keys, comma separated. '1r' means first col, reverse order [1]") do |v|
+    options[:keys] = v
+  end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end.parse!
+
+$res = options[:resolution]
+
+# parse keys : [column, reverse?]
+keys = options[:keys].map do |key|
+  [ key.to_i, key['r'].nil? ? 1 : -1 ]
+end
+
+# read file / stdin
+case ARGV.length
+when 0
+  lines = STDIN.readlines.map(&:chomp)
+  options[:inplace] == false  # cannot replace STDIN inplace
+when 1
+  file  = ARGV[0]
+  lines = File.open(file, 'r').readlines.map(&:chomp)
+else
+  raise ArgumentError.new("Wrong number of arguments")
+end
+
+# set the first and last lines to sort
+first = options[:lines][0]
+last  = options[:lines][1] || lines.length
+
+# split into fields, and add an index (line number)
+tmp = lines[first-1..last].map.with_index do |line, i|
+    to_arr(line).unshift i + first - 1
+end.delete_if(&:nil?)
+
+# do the actual sorting
+tmp.sort! do |x, y|
+  sorted = 0
+  keys.each do |key|
+    sorted = cmpfunc(x[key[0]], y[key[0]]) * key[1] rescue 0
+    break if sorted != 0
+  end
+  sorted
+end
+
+# open the input file if --inplace
+if options[:inplace]
+  $stdout.reopen(file, 'w')
+end
+
+# put skipped header
+if first > 1
+  print_range lines[0..first-2]
+end
+
+# put sorted region
+tmp.each do |l|
+  puts lines[l[0]]
+end
+
+# put skipped footer
+if last < lines.length
+  print_range lines[last..-1]
+end

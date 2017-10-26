@@ -1,0 +1,7 @@
+tags
+tmp/
+mail/mutt/aliases
+nvim/bundle
+zsh/syntax-highlight
+zsh/zsh-completions
+mail/notmuch-vim

@@ -42,6 +42,7 @@ set sig_on_top
 set signature = 'echo "\nBest,\nSencer"|'
 # set signature = 'echo "\nSencer\n" |'
 set abort_nosubject = ask-yes
+set abort_noattach = ask-no
 
 set forward_quote
 set forward_format = "Fwd: %s"

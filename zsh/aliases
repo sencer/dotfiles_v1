@@ -51,7 +51,7 @@ alias sbatch='ras sbatch'
 alias scancel='ras scancel'
 alias f='ras -t -i less +F'
 alias fo='ras -t -i less +F output.txt'
-alias ft='ras -t -i tail -n 2000 -f'
+alias ft='ras -i tail -n 2000 -f'
 alias listen='coproc listen &>/dev/null'
 alias state='ssh ofis cat ~/.dotfiles/tmp/mails.log'
 

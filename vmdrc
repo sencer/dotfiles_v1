@@ -119,6 +119,8 @@ proc save_xyz { sel fname {all 0}} {
     puts $fildes [$sel num]
     if { [molinfo $molid get a] > 0 } {
       puts $fildes "celldm [molinfo $molid get {a b c alpha beta gamma}]"
+    } else {
+      puts $fildes ""
     }
 
     foreach atom [$sel get {element x y z}] {

@@ -123,5 +123,5 @@ function! InsertSpaces()
   endif
 endfunction
 
-inoremap <silent> <C-g> <C-R>=InsertSpaces()<CR>
+inoremap <silent> <C-g><C-g> <C-R>=InsertSpaces()<CR>
 

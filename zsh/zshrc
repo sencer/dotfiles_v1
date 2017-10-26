@@ -1,7 +1,7 @@
 # vi: fdm=marker
-if [[ -z $TMUX ]]; then
-  exec tmux
-fi
+# if [[ -z $TMUX ]]; then
+#   exec tmux
+# fi
 
 # set shell options {{{
 eval "$(dircolors $ZDOTDIR/dircolors)"

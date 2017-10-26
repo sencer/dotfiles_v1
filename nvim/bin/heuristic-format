@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+
+case ARGV.length
+when 0
+  lines = STDIN.readlines
+when 1
+  lines = File.open(ARGV[0], 'r').readlines
+else
+  raise ArgumentError.new("Wrong number of arguments")
+end
+
+splitted = lines.map { |line| line.chomp.split }
+
+# get the longest of each column
+
+longest = [""] * splitted[0].length
+
+splitted.each do |fields|
+  fields.each.with_index do |field, i|
+    if field.length > longest[i].length
+      longest[i] = field
+    end
+  end
+end
+
+# run some heuristics
+
+fs = longest.map do |field|
+  format = nil
+  begin
+    num = Float(field)
+    if field["."].nil?
+      # it is integer
+      format = "%#{field.length}d"
+    else
+      format = "%#{field.length}.#{field.split('.')[1].length}f"
+    end
+  rescue
+    format = "%-#{field.length}s"
+  end
+  format
+end.join(" ") + "\n"
+
+# print out
+splitted.each do |line|
+  printf(fs, *(line.map { |field| Float(field) rescue field }))
+end
