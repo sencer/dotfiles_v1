@@ -242,6 +242,8 @@ zmodload zsh/terminfo
 for mode in viins vicmd; do
   bindkey -M $mode "$terminfo[khome]" beginning-of-line
   bindkey -M $mode "$terminfo[kend]"  end-of-line
+  bindkey -M $mode "\e[H"             beginning-of-line
+  bindkey -M $mode "\e[F"             end-of-line
   bindkey -M $mode "$terminfo[kcuu1]" history-beginning-search-backward
   bindkey -M $mode "$terminfo[kcud1]" history-beginning-search-forward
   bindkey -M $mode "\e[A"             history-beginning-search-backward
@@ -353,7 +355,7 @@ HISTFILE="$HOME/.dotfiles/tmp/history"
 HISTSIZE=12000
 SAVEHIST=10000
 
-path=($HOME/bin $HOME/.cargo/bin /opt/conda/bin $path)
+path=($HOME/bin $HOME/.cargo/bin $HOME/software/conda/bin $path)
 
 fpath=($ZDOTDIR/autoload $ZDOTDIR/zsh-completions/src $fpath)
 for i ($ZDOTDIR/autoload/^_*(:t)) autoload -U $i
