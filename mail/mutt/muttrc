@@ -81,6 +81,7 @@ bind index _ collapse-all
 # Saner copy/move dialogs
 macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
 macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+macro index,pager <F1> "<enter-command>unset pipe_decode<enter><enter-command>source '$HOME/.config/mutt/mutt2task |'<enter><enter-command>set pipe_decode<enter>"
 
 # use notmuch for searches
 bind index,pager / vfolder-from-query
