@@ -4,6 +4,7 @@ Plug '~/software/vim-vmd'
 Plug '~/software/vim-eval'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'romainl/vim-cool'
 
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Plug 'junegunn/fzf.vim'
