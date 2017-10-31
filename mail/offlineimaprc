@@ -1,5 +1,5 @@
 [general]
-ui = BlinkenLights
+ui               = BlinkenLights
 pythonfile       = ~/.dotfiles/mail/imap-pass.py
 accounts         = Princeton,Gmail
 maxsyncaccounts  = 2
@@ -17,7 +17,7 @@ postsynchook     = ~/.dotfiles/mail/tag-new-messages.sh
 type             = Gmail
 remoteuser       = sencerselcuk@gmail.com
 remotepasseval   = get_pass('gmail-app')
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+sslcacertfile    = /etc/ssl/certs/ca-certificates.crt
 nametrans        = lambda folder: folder.replace("[Gmail]/", "").replace(" ", "")
 
 [Repository gmail-local]
@@ -38,9 +38,7 @@ remotehost       = exchangeimap.princeton.edu
 remoteuser       = sselcuk@princeton.edu
 remotepasseval   = get_pass('princeton')
 cert_fingerprint = 0855b2039ba7540c2f53f186bfc34fde80468fad
-folderfilter     = lambda folder: not (folder.startswith('Sync Issues')
-                      or folder.startswith('Archive') or folder in [
-                      'Contacts', 'PWSCF', 'Tasks', 'Calendar', 'Notes', 'Journal', 'RSS Feeds'])
+folderfilter     = lambda folder: not (folder.startswith('Sync Issues') or folder.startswith('Archive') or folder in [ 'Contacts', 'PWSCF', 'Tasks', 'Calendar', 'Notes', 'Journal', 'RSS Feeds'])
 nametrans        = lambda folder: folder.replace(" ", "").replace("-", "")
 
 [Repository princeton-local]
