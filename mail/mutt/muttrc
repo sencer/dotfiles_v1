@@ -15,8 +15,8 @@ mailboxes "=princeton/INBOX" "=gmail/INBOX" "+gmail/AllMail" \
 # default settings are princeton
 source princeton.muttrc
 
-folder-hook gmail.* source $HOME/.mutt/gmail.muttrc
-folder-hook princeton.* source $HOME/.mutt/princeton.muttrc
+folder-hook gmail.* source $HOME/.config/mutt/gmail.muttrc
+folder-hook princeton.* source $HOME/.config/mutt/princeton.muttrc
 
 set header_cache     = ~/.cache/mutt/
 set message_cachedir = ~/.cache/mutt/
@@ -32,7 +32,7 @@ set use_from=yes
 set envelope_from=yes
 
 # mail writing settings
-set editor = "nvim -S '~/.mutt/mutt.vim' -c 'startinsert'"
+set editor = "nvim -S '~/.config/mutt/mutt.vim' -c 'startinsert'"
 set text_flowed
 set reflow_text
 set wrap=78
@@ -136,7 +136,7 @@ set save_history = 1000
 set history_file = ~/.cache/mutt/mutt_history
 
 # aliases
-set alias_file   = ~/.mutt/aliases
+set alias_file   = ~/.config/mutt/aliases
 set reverse_alias
 source $alias_file
 
