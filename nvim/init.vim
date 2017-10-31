@@ -1,82 +1,70 @@
 call plug#begin('~/.config/nvim/bundle')
 
-Plug '~/software/vim-vmd'
-Plug '~/software/vim-eval'
-Plug 'morhetz/gruvbox'
-Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'romainl/vim-cool'
-
+Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-rooter'
+Plug 'AndrewRadev/sideways.vim'
+Plug 'arecarn/crunch.vim'
+Plug 'arecarn/selection.vim'
+Plug 'bruno-/vim-vertical-move'
+Plug 'chrisbra/Colorizer'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'fs111/pydoc.vim'
+Plug 'gioele/vim-autoswap'
+Plug 'idbrii/textobj-word-column.vim'
+Plug 'idbrii/vim-endoscope'
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Plug 'junegunn/fzf.vim'
-
-Plug 'AndrewRadev/sideways.vim'
-Plug 'tommcdo/vim-exchange'
-Plug 'bruno-/vim-vertical-move'
-Plug 'idbrii/textobj-word-column.vim'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-rsi'
-Plug 'tpope/vim-fugitive'
-Plug 'kana/vim-repeat'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'KabbAmine/vCoolor.vim'
 Plug 'kana/vim-niceblock'
-Plug 'salsifis/vim-transpose'
-Plug 'arecarn/selection.vim'
-Plug 'arecarn/crunch.vim'
-Plug 'sencer/vis'
-Plug 'gioele/vim-autoswap'
-
-Plug 'rstacruz/vim-closer'
-Plug 'idbrii/vim-endoscope'
-Plug 'tpope/vim-endwise'
-Plug 'SirVer/UltiSnips'
-Plug 'sencer/vim-snippets'
-
-Plug 'w0rp/ale'
-Plug 'majutsushi/tagbar'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'wellle/tmux-complete.vim'
+Plug 'kana/vim-repeat'
+Plug 'kana/vim-textobj-user'
 Plug 'kassio/neoterm'
-Plug 'tpope/vim-dispatch'
+Plug 'kshenoy/vim-signature'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'majutsushi/tagbar'
+Plug 'mhinz/vim-hugefile'
+Plug 'morhetz/gruvbox'
+Plug 'purplep/python-syntax'
 Plug 'radenling/vim-dispatch-neovim'
-" if has('nvim')
-Plug 'roxma/nvim-completion-manager'
+Plug 'reedes/vim-textobj-sentence'
+Plug 'romainl/vim-cool'
 Plug 'roxma/ncm-clang'
+Plug 'roxma/nvim-completion-manager'
 if !has('nvim')
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
-" Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
-" else
-  " Plug 'maralla/completor.vim'
-" endif
-
-Plug '~/software/vim-gnuplot'
+Plug 'rstacruz/vim-closer'
+Plug 'salsifis/vim-transpose'
 Plug 'sencer/abinitio.vim'
 Plug 'sencer/lammps.vim'
-Plug 'tweekmonster/braceless.vim'
-
-Plug 'chrisbra/Colorizer'
-Plug 'KabbAmine/vCoolor.vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'airblade/vim-rooter'
-Plug 'kshenoy/vim-signature'
-Plug 'simnalamburt/vim-mundo'
-Plug 'junegunn/vim-easy-align'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'stefandtw/quickfix-reflector.vim'
-
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
+Plug 'sencer/vim-snippets'
+Plug 'sencer/vis'
 Plug 'sencer/wordnet.vim'
-Plug 'reedes/vim-textobj-sentence'
-Plug 'tpope/vim-abolish'
-Plug 'kana/vim-textobj-user'
 Plug 'Shougo/echodoc.vim'
-Plug 'fs111/pydoc.vim'
-Plug 'purplep/python-syntax'
-Plug 'mhinz/vim-hugefile'
+Plug 'simnalamburt/vim-mundo'
+Plug 'SirVer/UltiSnips'
+Plug '~/software/vim-eval'
+Plug '~/software/vim-gnuplot'
+Plug '~/software/vim-vmd'
+Plug 'stefandtw/quickfix-reflector.vim'
+Plug 'tmhedberg/SimpylFold'
+Plug 'tommcdo/vim-exchange'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
+Plug 'w0rp/ale'
+Plug 'wellle/tmux-complete.vim'
 
 call plug#end()
 
@@ -86,7 +74,6 @@ set termguicolors
 if has('nvim')
   set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
 endif
-hi link BracelessIndent ColorColumn
 
 if exists('$CURRENTSERVER')
   setlocal eventignore=BufEnter,VimEnter
@@ -126,16 +113,6 @@ let g:neoterm_direct_open_repl = 1
 nnoremap <F2> :TREPLSendLine<CR>
 vnoremap <F2> :TREPLSendSelection<CR>
 nnoremap <F3> :TREPLSendFile<CR>
-
-" " LSP
-" let g:LanguageClient_autoStart = 1
-" let g:LanguageClient_serverCommands = {
-"       \ 'python': ['pyls']
-"       \ }
-" " <leader>ld to go to definition
-" autocmd FileType python nnoremap <buffer> gd :call LanguageClient_textDocument_definition()<cr>
-" autocmd FileType python nnoremap <buffer> <Leader>k :call LanguageClient_textDocument_hover()<cr>
-" autocmd FileType python nnoremap <buffer> <Leader>r :call LanguageClient_textDocument_rename()<cr>
 
 " ale
 let g:ale_sign_column_always = 1
@@ -343,8 +320,7 @@ augroup vimrc
   autocmd vimrc FileType tcl setl foldmethod=syntax
   autocmd vimrc FileType vim setl keywordprg=:help
   autocmd vimrc FileType python
-        \ compiler python |
-        \ BracelessEnable +indent +fold +highlight
+        \ compiler python
 
   autocmd vimrc FileType python,tex,latex,vim,tcl
         \ let b:closer = 1|
@@ -364,7 +340,7 @@ augroup vimrc
         \ if line("'\"") > 1 && line("'\"") <= line("$") |
         \ exe "normal! g`\"" |
         \ endif
-  
+
   autocmd BufNewFile,BufReadPre /dev/shm/* setl noswapfile nobackup noundofile
 
   au FileType *
