@@ -1,3 +1,4 @@
+*.pyc
 tags
 tmp/
 mail/mutt/aliases
