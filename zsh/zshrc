@@ -20,7 +20,7 @@ setopt AUTO_CD AUTO_PUSHD CDABLE_VARS PUSHD_IGNORE_DUPS PUSHD_TO_HOME  \
 # }}}
 
 # Completion Styles from zprezto {{{
-autoload -Uz compinit && compinit -i
+autoload -Uz compinit
 
 _comp_files=($HOME/.dotfiles/tmp/.zcompdump(Nm-20))
 
@@ -377,7 +377,6 @@ PROMPT_EOL_MARK=' [no EOL]'
 autoload -U zmv
 zmodload zsh/pcre
 source /etc/zsh_command_not_found
-autoload -Uz compinit && compinit -i
 disable r # do not use shell built-in r for repeating last command
 #}}}
 
