@@ -82,6 +82,9 @@ call plug#end()
 set background=dark
 colorscheme gruvbox
 set termguicolors
+if has('nvim')
+  set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+endif
 hi link BracelessIndent ColorColumn
 
 if exists('$CURRENTSERVER')
