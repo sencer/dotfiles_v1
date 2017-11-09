@@ -284,9 +284,9 @@ command! -bang -nargs=* Rg
       \           : fzf#vim#with_preview('right:50%:hidden', '?'),
       \   <bang>0)
 
-nnoremap <Leader>a :Ag <C-r>=expand("<cword>")<CR><CR>
-nnoremap <Leader>A :Ag <C-r>=expand("<cWORD>")<CR><CR>
-nnoremap <Leader>/ :Ag
+nnoremap <Leader>a :Rg <C-r>=expand("<cword>")<CR><CR>
+nnoremap <Leader>A :Rg <C-r>=expand("<cWORD>")<CR><CR>
+nnoremap <Leader>/ :Rg 
 nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>c :BCommits<CR>
 nnoremap <Leader>f :Files<CR>
