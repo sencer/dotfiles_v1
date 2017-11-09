@@ -5,7 +5,7 @@ kalan=($($namaz kalan))
 echo "${kalan[0]:-_}"
 echo "---"
 
-FILE="$HOME/.dotfiles/tmp/namaz"
+FILE="$HOME/.dotfiles/tmp/namaz.${CITY}"
 isim=( Sabah Imsak Ogle Ikindi Aksam Yatsi Sabah Imsak Ogle Ikindi Aksam Yatsi )
 i=0
 first=0

@@ -1,12 +1,16 @@
 #!/bin/bash
 
-DATAFILE=$HOME/.dotfiles/tmp/namaz
+if [[ $(tail -1 $HOME/.dotfiles/tmp/city) -lt $(($(date +%s)-3600)) ]]; then
+  $HOME/.dotfiles/tool/cities.sh
+fi
+CITY=$(head -1 $HOME/.dotfiles/tmp/city)
+
+DATAFILE=$HOME/.dotfiles/tmp/namaz.${CITY}
 
 function namaz_guncelle {
   # get prayer times from api.namazvakitleri.com.tr
   # and write to $DATAFILE as one timestamp per line
-  # local url='http://api.namazvakitleri.com.tr/getTimes/json/217'
-  local url='http://api.namazvakitleri.com.tr/getTimes/json/185'
+  local url="http://api.namazvakitleri.com.tr/getTimes/json/${CITY}"
   date -f <(curl --silent  $url | \
             command sed -r 's/\{/\n{/g;s/(\{|")[ a-zD"},:]+/ /g' |\
             tail -n +6 |\
