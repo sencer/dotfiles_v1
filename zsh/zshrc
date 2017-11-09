@@ -251,6 +251,7 @@ for mode in viins vicmd; do
   bindkey -M $mode "$terminfo[kcbt]"  reverse-menu-complete
   bindkey -M $mode "$terminfo[kdch1]" delete-char
   bindkey -M $mode "$terminfo[kbs]"   backward-delete-char
+  bindkey -M $mode "\C-?"   backward-delete-char
   bindkey -M $mode "\C-q"             push-input
   bindkey -M $mode "\eq"              get-line
 done

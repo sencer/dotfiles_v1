@@ -4,7 +4,7 @@ alternates 'sselcuk@.*princeton.edu' 'sencerselcuk@gmail.com' 'sencer@alumni.pri
 set folder = "$HOME/.mail/"
 mailboxes "=princeton/INBOX" "=gmail/INBOX" "+gmail/AllMail" \
           "+gmail/BuildingNotifications" "+gmail/Drafts" "+gmail/Maintenance" \
-          "+gmail/Package" "+gmail/PsiK" "+gmail/SentMail" "+gmail/Starred" \
+          "+gmail/Package" "+gmail/PsiK" "+gmail/SentMail" "+gmail/Starred" "+gmail/Trash" \
           "+princeton/DeletedItems" "+princeton/Drafts"  "+princeton/JunkEMail"\
           "+princeton/Outbox" "+princeton/SentItems" "+gmail-old/AllMail" \
           "+princeton-old/2011" "+princeton-old/2012" "+princeton-old/2013" \
@@ -32,7 +32,7 @@ set use_from=yes
 set envelope_from=yes
 
 # mail writing settings
-set editor = "nvim -S '~/.config/mutt/mutt.vim' -c 'startinsert'"
+set editor = "nvim -S '~/.config/mutt/mutt.vim'"
 set text_flowed
 set reflow_text
 set wrap=78
@@ -40,7 +40,6 @@ set reflow_wrap=78
 set nosig_dashes
 set sig_on_top
 set signature = 'echo "\nBest,\nSencer"|'
-# set signature = 'echo "\nSencer\n" |'
 set abort_nosubject = ask-yes
 set abort_noattach = ask-no
 

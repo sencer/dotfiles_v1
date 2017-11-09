@@ -23,7 +23,7 @@ nametrans        = lambda folder: folder.replace("[Gmail]/", "").replace(" ", ""
 [Repository gmail-local]
 type             = GmailMaildir
 localfolders     = ~/.mail/gmail/
-nametrans        = lambda folder: ("[Gmail]/"+folder if folder in ["SentMail", "AllMail", "Starred", "Drafts"] else folder).replace("Mail", " Mail")
+nametrans        = lambda folder: ("[Gmail]/"+folder if folder in ["SentMail", "AllMail", "Starred", "Drafts", "Trash"] else folder).replace("Mail", " Mail")
 
 [Account Princeton]
 localrepository  = princeton-local
