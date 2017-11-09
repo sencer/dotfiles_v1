@@ -6,3 +6,4 @@ nvim/bundle
 zsh/syntax-highlight
 zsh/zsh-completions
 mail/notmuch-vim
+nvim/autoload/plug.vim.old
