@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
+
 namaz=$HOME/bin/namaz
 next=($($namaz next))
 kalan=($($namaz kalan))
 echo "${kalan[0]:-_}"
 echo "---"
+
+if [[ $(tail -1 $HOME/.dotfiles/tmp/city) -lt $(($(date +%s)-3600)) ]]; then
+  $HOME/.dotfiles/tool/cities.sh
+fi
+CITY=$(head -1 $HOME/.dotfiles/tmp/city)
 
 FILE="$HOME/.dotfiles/tmp/namaz.${CITY}"
 isim=( Sabah Imsak Ogle Ikindi Aksam Yatsi Sabah Imsak Ogle Ikindi Aksam Yatsi )
