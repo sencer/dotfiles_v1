@@ -420,8 +420,9 @@ proc initialize_vmd {} {
   user add key a { save_reps }
   user add key A { save_reps 1 }
 
-  user add key F1 { set_preset dynamic }
-  user add key F2 { set_preset cpk }
+  user add key F1 { load_saved_reps top }
+  user add key F2 { set_preset dynamic }
+  user add key F3 { set_preset cpk }
 
   # manage pbc tools
 
