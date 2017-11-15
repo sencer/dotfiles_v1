@@ -58,10 +58,17 @@ proc show_cpk { molid } {
 }
 
 # utility functions
-proc center_sel { sel } {
+proc center_sel { {sel all} } {
   global shift
-  set molid [$sel molid]
-  set all [atomselect $molid all]
+
+  if { $sel == "all" } {
+    set molid [molinfo top]
+    set sel [atomselect top all]
+    set all $sel
+  } else {
+    set molid [$sel molid]
+    set all [atomselect $molid all]
+  }
 
   set r [vecsub [vecadd "$shift($molid,0) $shift($molid,1) $shift($molid,2)"\
     [vecscale 0.5 [molinfo $molid get {a b c}]]] \
