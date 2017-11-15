@@ -16,7 +16,7 @@ proc show_dynamic { molid } {
   mol addrep $molid
 
   mol representation DynamicBonds 2.3 0.1 16.0
-  mol selection noh and within 2.3 of name Ti Fe Co Ni Al
+  mol selection noh and within 2.3 of name Ti Fe Co Ni Al Zn
   mol addrep $molid
 
   mol representation DynamicBonds 1.7 0.1 16.0
