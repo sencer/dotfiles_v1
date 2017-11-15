@@ -272,7 +272,6 @@ proc save_reps {{pbc 0}} {
       puts $fildes ""
     }
 
-
     # put display matrices
     puts $fildes "$prefix molinfo \$molid set center_matrix {[molinfo $mol get center_matrix]}"
     puts $fildes "$prefix molinfo \$molid set rotate_matrix {[molinfo $mol get rotate_matrix]}"
@@ -389,7 +388,7 @@ proc solid_state_radii { {molid top} } {
   set sel [atomselect $molid all]
   $sel set radius [vecscale 1.2 [$sel get radius]]
   mol bondsrecalc $molid
-  mol reanalyz $molid
+  mol reanalyze $molid
   $sel delete
 }
 
@@ -492,7 +491,6 @@ proc initialize_molecule {molid} {
     set shift($molid,1) 0
     set shift($molid,2) 0
   }
-
 
   if { [molinfo $molid get filetype] == "xyz" && ![molinfo $molid get a] } {
   # if this is an xyz file and doesn't have pbc set already try
