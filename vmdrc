@@ -385,6 +385,14 @@ proc numfrags {{molid top}} {
   return [expr $nfrag+1]
 }
 
+proc solid_state_radii { {molid top} } {
+  set sel [atomselect $molid all]
+  $sel set radius [vecscale 1.2 [$sel get radius]]
+  mol bondsrecalc $molid
+  mol reanalyz $molid
+  $sel delete
+}
+
 # do initialization
 
 menu main on
