@@ -16,4 +16,5 @@ if [[ -n $CURRENTSERVER ]]; then
     return 0
   fi
 fi
+echo "Folder not found"
 return 1
