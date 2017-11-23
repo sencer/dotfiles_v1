@@ -71,7 +71,7 @@ proc center_sel { {sel all} } {
   }
 
   set r [vecsub [vecadd "$shift($molid,0) $shift($molid,1) $shift($molid,2)"\
-    [vecscale 0.5 [molinfo $molid get {a b c}]]] \
+    [vecscale 0.5 [vecadd {*}[lindex [pbc get -namd] 0]]]] \
     [measure center $sel] \
     ]
 
