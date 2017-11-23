@@ -19,6 +19,7 @@ alias octave='octave-cli -q'
 alias julia='julia -q'
 if [[ -z $BASH_VERSION ]]; then
   alias notmuch='noglob notmuch'
+  alias find='noglob find'
 fi
 
 alias dc='cd'
