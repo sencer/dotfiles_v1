@@ -474,6 +474,7 @@ proc initialize_vmd {} {
   catch { color Name O pink }
   catch { color Name Ti white }
   catch { color Element Ti silver }
+  catch { color Element Zn gray }
   catch { color Element Ni silver }
   catch { color Element Co silver }
   catch { color Element Al gray }
