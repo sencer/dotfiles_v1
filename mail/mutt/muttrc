@@ -2,18 +2,14 @@
 alternates 'sselcuk@.*princeton.edu' 'sencerselcuk@gmail.com' 'sencer@alumni.princeton.edu'
 
 set folder = "$HOME/.mail/"
-mailboxes "=princeton/INBOX" "=gmail/INBOX" "+gmail/AllMail" \
+mailboxes "=bnl/INBOX" "=princeton/INBOX" "=gmail/INBOX" "+gmail/AllMail" \
           "+gmail/BuildingNotifications" "+gmail/Drafts" "+gmail/Maintenance" \
           "+gmail/Package" "+gmail/PsiK" "+gmail/SentMail" "+gmail/Starred" "+gmail/Trash" \
           "+princeton/DeletedItems" "+princeton/Drafts"  "+princeton/JunkEMail"\
-          "+princeton/Outbox" "+princeton/SentItems" "+gmail-old/AllMail" \
-          "+princeton-old/2011" "+princeton-old/2012" "+princeton-old/2013" \
-          "+princeton-old/2014" "+princeton-old/2015" "+princeton-old/2016" \
-          "+princeton-old/Archives" "+princeton-old/DeletedItems" \
-          "+princeton-old/INBOX" "+princeton-old/SentItems"
+          "+princeton/Outbox" "+princeton/SentItems"
 
 # default settings are princeton
-source princeton.muttrc
+source bnl.muttrc
 
 folder-hook gmail.* source $HOME/.config/mutt/gmail.muttrc
 folder-hook princeton.* source $HOME/.config/mutt/princeton.muttrc

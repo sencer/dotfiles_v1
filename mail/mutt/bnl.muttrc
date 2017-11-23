@@ -1,0 +1,10 @@
+set realname  = "Sencer Selcuk"
+set from      = selcuk@bnl.gov
+set spoolfile = +bnl/INBOX
+set postponed = +bnl/Drafts
+set record    = +bnl/SentItems
+set trash     = +bnl/DeletedItems
+# macro index,pager e <save-message>=+princeton/Archives.`date +%Y`\n
+macro index,pager <F5> "!offlineimap -o -a BNL"
+
+# vi: ft=muttrc

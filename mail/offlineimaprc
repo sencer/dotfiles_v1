@@ -1,8 +1,8 @@
 [general]
 ui               = BlinkenLights
 pythonfile       = ~/.dotfiles/mail/imap-pass.py
-accounts         = Princeton,Gmail
-maxsyncaccounts  = 2
+accounts         = Princeton,Gmail,BNL
+maxsyncaccounts  = 3
 
 [Account Gmail]
 localrepository  = gmail-local
@@ -44,6 +44,26 @@ nametrans        = lambda folder: folder.replace(" ", "").replace("-", "")
 [Repository princeton-local]
 type             = Maildir
 localfolders     = ~/.mail/princeton/
+nametrans        = lambda folder: folder.replace("Item", " Item").replace("EMail", " E-Mail")
+
+[Account BNL]
+localrepository  = bnl-local
+remoterepository = bnl-remote
+autorefresh      = 1
+quick            = 3
+
+[Repository bnl-remote]
+type             = IMAP
+remotehost       = mail.bnl.gov
+remoteuser       = sselcuk@bnl.gov
+remotepasseval   = get_pass('bnl')
+sslcacertfile    = /etc/ssl/certs/ca-certificates.crt
+folderfilter     = lambda folder: not (folder.startswith('Sync Issues') or folder.startswith('Archive') or folder in [ 'Contacts', 'PWSCF', 'Tasks', 'Calendar', 'Notes', 'Journal', 'RSS Feeds'])
+nametrans        = lambda folder: folder.replace(" ", "").replace("-", "")
+
+[Repository bnl-local]
+type             = Maildir
+localfolders     = ~/.mail/bnl/
 nametrans        = lambda folder: folder.replace("Item", " Item").replace("EMail", " E-Mail")
 
 [mbnames]
