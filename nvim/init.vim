@@ -268,8 +268,8 @@ nnoremap <silent> <Leader>x :x!<CR>
 nnoremap <expr> <Leader>z winnr('$')==1?':tabclose<CR>':':tab split<CR>'
 nnoremap <expr> <Leader>q len(filter(range(1, bufnr('$')), 'buflisted(v:val)'))==1?':q<CR>':':bw<CR>'
 
-nnoremap [h <Plug>(GitGutterPrevHunk)
-nnoremap ]h <Plug>(GitGutterNextHunk)
+nnoremap <silent> [h :GitGutterPrevHunk<CR>
+nnoremap <silent> ]h :GitGutterNextHunk<CR>
 
 nnoremap <Leader>gc :Gcommit<CR>
 nnoremap <Leader>ga :Gcommit --amend<CR>
