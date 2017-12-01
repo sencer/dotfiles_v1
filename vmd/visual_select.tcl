@@ -65,6 +65,9 @@ proc ::VisualSelect::Toggle {} {
     user add key Control-l {VisualSelect::TranslateCell "y"  $VisualSelect::tincr}
     user add key Control-m {VisualSelect::TranslateCell "z" -$VisualSelect::tincr}
     user add key Control-i {VisualSelect::TranslateCell "z"  $VisualSelect::tincr}
+    user add key Control-f {save_xyz $vsel [generate_filename \
+                   [file tail [file rootname [molinfo top get filename]]] xyz]}
+    user add key Control-g {save_xyz $vsel [molinfo top get filename]}
     if {[info exists vsel]} {
       Trace
     } else {
