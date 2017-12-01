@@ -20,17 +20,6 @@ setopt AUTO_CD AUTO_PUSHD CDABLE_VARS PUSHD_IGNORE_DUPS PUSHD_TO_HOME  \
 # }}}
 
 # Completion Styles from zprezto {{{
-autoload -Uz compinit
-
-_comp_files=($HOME/.dotfiles/tmp/.zcompdump(Nm-20))
-
-if (( $#_comp_files )); then
-  compinit -i -C -d $HOME/.dotfiles/tmp/.zcompdump
-else
-  compinit -i -d $HOME/.dotfiles/tmp/.zcompdump
-fi
-unset _comp_files
-
 # Use caching to make completion for commands such as dpkg and apt usable.
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path "$HOME/.dotfiles/tmp/.zcompcache"
@@ -379,13 +368,13 @@ autoload -U zmv
 zmodload zsh/pcre
 source /etc/zsh_command_not_found
 disable r # do not use shell built-in r for repeating last command
-#}}}
-
+autoload -Uz compinit  && compinit -i -d ~/.dotfiles/tmp/zcompdump
 # compile zcompdump
 {
-  zcomp="$HOME/.dotfiles/tmp/.zcompdump" 
+  zcomp="$HOME/.dotfiles/tmp/zcompdump" 
   if [[ -s "$zcomp" && (! -s "${zcomp}.zwc" || "${zcomp}" -nt "${zcomp}.zwc") ]]; then 
     zcompile "$zcomp"
   fi
 } &!
 
+#}}}
