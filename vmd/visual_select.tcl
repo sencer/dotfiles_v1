@@ -59,6 +59,12 @@ proc ::VisualSelect::Toggle {} {
     user add key L {VisualSelect::Translate "y" -$VisualSelect::tincr}
     user add key I {VisualSelect::Translate "z"  $VisualSelect::tincr}
     user add key M {VisualSelect::Translate "z" -$VisualSelect::tincr}
+    user add key Control-h {VisualSelect::TranslateCell "y" -$VisualSelect::tincr}
+    user add key Control-j {VisualSelect::TranslateCell "x"  $VisualSelect::tincr}
+    user add key Control-k {VisualSelect::TranslateCell "x" -$VisualSelect::tincr}
+    user add key Control-l {VisualSelect::TranslateCell "y"  $VisualSelect::tincr}
+    user add key Control-m {VisualSelect::TranslateCell "z" -$VisualSelect::tincr}
+    user add key Control-i {VisualSelect::TranslateCell "z"  $VisualSelect::tincr}
     if {[info exists vsel]} {
       Trace
     } else {
@@ -157,6 +163,18 @@ proc ::VisualSelect::Translate { {axis "z"} { inc 0.2 } } {
     set vec "0 $inc 0"
   } elseif {$axis == "z"} {
     set vec "0 0 $inc"
+  }
+  $vsel moveby $vec
+}
+
+proc ::VisualSelect::TranslateCell { {axis "z"} { inc 0.2 } } {
+  global vsel
+  if {$axis == "x"} {
+    set vec [vecscale $inc [lindex {*}[pbc get -namd] 0]]
+  } elseif {$axis == "y"} {
+    set vec [vecscale $inc [lindex {*}[pbc get -namd] 1]]
+  } elseif {$axis == "z"} {
+    set vec [vecscale $inc [lindex {*}[pbc get -namd] 2]]
   }
   $vsel moveby $vec
 }
