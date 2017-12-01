@@ -58,6 +58,37 @@ proc show_cpk { molid } {
 }
 
 # utility functions
+proc reload { {molid top} } {
+
+  global dont_source_view_vmd
+  set dont_source_view_vmd 1
+
+  if {$molid == "top"} {
+    set molid [molinfo top]
+  }
+
+  set file [molinfo $molid get filename]
+
+  global representations
+  global viewpoints
+
+  save_viewpoint
+  save_reps
+
+  mol delete $molid
+  set newmol [mol new $file]
+
+  set representations($newmol) $representations($molid)
+  set viewpoints($newmol) $viewpoints($molid)
+  unset representations($molid)
+  unset viewpoints($molid)
+
+  restore_viewpoint
+  restore_reps
+
+  return 0
+}
+
 proc center_sel { {sel all} } {
   global shift
 
@@ -439,6 +470,8 @@ proc initialize_vmd {} {
   user add key a { save_reps }
   user add key A { save_reps 1 }
 
+  user add key R { reload }
+
   user add key C { center_sel }
 
   user add key F1 { load_saved_reps top }
@@ -501,8 +534,11 @@ proc init_mol_proxy {dummy molid dummy2} {
 
 proc initialize_molecule {molid} {
 
-  if { [info command load_saved_reps] == "" || \
-       [load_saved_reps $molid] } {
+  global dont_source_view_vmd
+
+  if { ![info exists dont_source_view_vmd] && (
+       [info command load_saved_reps] == "" ||
+       [load_saved_reps $molid]) } {
        # if view.vmd is not sourced, or if the sourced file does not apply
        # to the current molecule set dynamic preset.
     set_preset dynamic $molid 
