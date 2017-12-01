@@ -148,11 +148,16 @@ proc ::VisualSelect::Trace {args} {
 
 proc ::VisualSelect::Rotate {{ axis "z" } { inc 2 }} {
   global vsel
-  # global gc
-  set gc [measure center  $vsel]
-  $vsel moveby [vecscale -1 $gc]
+  global gc
+
+  if { [info exists gc] } {
+    set lgc $gc
+  } else {
+    set lgc [measure center $vsel]
+  }
+  $vsel moveby [vecscale -1 $lgc]
   $vsel move [transaxis $axis $inc]
-  $vsel moveby $gc
+  $vsel moveby $lgc
 }
 
 proc ::VisualSelect::Translate { {axis "z"} { inc 0.2 } } {
