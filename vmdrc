@@ -209,7 +209,7 @@ proc set_xyz_cell { molid {var 0} } {
   set ldm [llength $dm]
   if { [lindex $dm 0] == "celldm" && ($ldm == 4 || $ldm == 7) } {
     pbc set "[lrange $dm 1 end]" -molid $molid -all
-  } elseif { [lindex $dm 0] ==  "TV:" } {
+  } elseif { [lindex $dm 0] ==  "TV:" && [llength $dm] > 1 } {
     set_cell_from_vecs $dm $ldm
   } else {
     puts "File doesn't contain pbc information, at least for the first frame"
@@ -243,7 +243,7 @@ proc set_xyz_cell { molid {var 0} } {
         }
         molinfo $molid set frame $frame
         molinfo $molid set { a b c alpha beta gamma } [lrange $dm 1 end]
-      } elseif { [lindex $dm 0] ==  "TV:" } {
+      } elseif { [lindex $dm 0] ==  "TV:" && [llength $dm] > 1 } {
         set_cell_from_vecs $dm $ldm
       } else {
         set flag 1
