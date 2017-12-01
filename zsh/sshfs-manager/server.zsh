@@ -1,18 +1,27 @@
 #!/bin/zsh
+typeset -xT SERVERLIST serverlist
+local server=$1
 
 if [[ $1 == fix ]]; then
   echo "Trying to force remove sshfs connections."
-  servers=( $(pgrep -a sshfs|cut -d' ' -f3) )
-  for server in $servers; do
-    fusermount -u -z $HOME/${server%:}
-    rmdir $HOME/${server%:}
+  # servers=( $(pgrep -a sshfs|cut -d' ' -f3) )
+  # for server in $servers; do
+  #   fusermount -u -z $HOME/${server%:}
+  #   rmdir $HOME/${server%:}
+  # done
+
+  for server in $serverlist; do
+    if grep -q $server /etc/mtab; then
+      fusermount -u -z $HOME/${server}
+    fi
+    if [[ -d $HOME/${server} ]]; then
+      rmdir $HOME/${server}
+    fi
   done
+
   pkill -9 sshfs
   exit 1
 fi
-
-typeset -xT SERVERLIST serverlist
-local server=$1
 
 if [[ ${serverlist[(r)$server]} != $server ]]; then
   echo "Server $server is not found in the ssh config file."
@@ -37,15 +46,15 @@ else
   fi
   mkdir -p $HOME/$server
   local sshfs_options=(
-    auto_cache
-    reconnect
-    transform_symlinks
-    follow_symlinks
-    workaround=rename
-    idmap=user
-    cache_timeout=7200
-    attr_timeout=7200
-    ssh_command="ssh -S none"
+  auto_cache
+  reconnect
+  transform_symlinks
+  follow_symlinks
+  workaround=rename
+  idmap=user
+  cache_timeout=7200
+  attr_timeout=7200
+  ssh_command="ssh -S none"
   )
   if sshfs $server: $HOME/$server -o${(j:,:)sshfs_options}; then
     echo "$server successfuly mounted"
