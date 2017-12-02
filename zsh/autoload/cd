@@ -7,14 +7,31 @@ elif builtin cd "${1%/*}" 2> /dev/null; then
 fi
 
 if [[ -n $CURRENTSERVER ]]; then
-  local jobd
-  jobd=$(squeue -o \'%j %Z\' -u $USER -h|command grep "^$1"|cut -d' ' -f2|\
-    sed "s[.*sselcuk[$HOME/$CURRENTSERVER/gpfs[")
-  if test -n "$jobd" && builtin cd "$jobd" 2> /dev/null; then
-    eval "${1}='${PWD}'"
-    echo "Entering job directory, and saving it for the session"
+  local arg=${1//-/__}
+
+  if builtin cd "$arg" 2>/dev/null; then
+    echo "Entering the saved job directory"
     return 0
   fi
+
+  local jobd
+  jobd=$(squeue -o \'%j %Z\' -u $USER -h|command grep "^$1"|head -1|cut -d' ' -f2)
+
+  if [[ -n "$jobd" ]]; then
+
+    if [[ "$jobd" == *cscr* ]]; then
+      jobd="$HOME/$CURRENTSERVER/cscr/${jobd#*sselcuk/}"
+    elif [[ "$jobd" == *gpfs* ]]; then
+      jobd="$HOME/$CURRENTSERVER/gpfs/${jobd#*sselcuk/}"
+    fi
+
+    if builtin cd "$jobd" 2>/dev/null; then
+      eval "${arg}='${PWD}'"
+      echo "Entering job directory, and saving it for the session"
+      return 0
+    fi
+  fi
 fi
+
 echo "Folder not found"
 return 1

@@ -1,4 +1,4 @@
-image/*; edisplay %s
-application/pdf; mupdf %s; nametemplate=%s.pdf
-text/html; luakit %s &>/dev/null && sleep 2 ; nametemplate=%s.html; test=test -n "$DISPLAY"; needsterminal
-application/vnd.openxmlformats-officedocument.wordprocessingml.document; libreoffice5.4 --writer %s &>/dev/null && sleep 3
+image/*; cp %s $MTMPDIR \; edisplay $MTMPDIR/$(basename %s) &
+text/html; cp %s $MTMPDIR \;  luakit $MTMPDIR/$(basename %s) &; nametemplate=%s.html;
+application/pdf; cp %s $MTMPDIR \; mupdf $MTMPDIR/$(basename %s) &
+application/*; cp %s $MTMPDIR \; xdg-open $MTMPDIR/$(basename %s) &

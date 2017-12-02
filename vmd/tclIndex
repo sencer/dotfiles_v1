@@ -16,6 +16,7 @@ set auto_index(::VisualSelect::RotateStack) [list source [file join $dir visual_
 set auto_index(::VisualSelect::Trace) [list source [file join $dir visual_select.tcl]]
 set auto_index(::VisualSelect::Rotate) [list source [file join $dir visual_select.tcl]]
 set auto_index(::VisualSelect::Translate) [list source [file join $dir visual_select.tcl]]
+set auto_index(::VisualSelect::TranslateCell) [list source [file join $dir visual_select.tcl]]
 set auto_index(::VisualSelect::RIncr) [list source [file join $dir visual_select.tcl]]
 set auto_index(::VisualSelect::TIncr) [list source [file join $dir visual_select.tcl]]
 set auto_index(::VisualSelect::Export) [list source [file join $dir visual_select.tcl]]

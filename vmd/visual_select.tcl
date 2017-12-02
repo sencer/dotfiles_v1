@@ -59,6 +59,15 @@ proc ::VisualSelect::Toggle {} {
     user add key L {VisualSelect::Translate "y" -$VisualSelect::tincr}
     user add key I {VisualSelect::Translate "z"  $VisualSelect::tincr}
     user add key M {VisualSelect::Translate "z" -$VisualSelect::tincr}
+    user add key Control-h {VisualSelect::TranslateCell "y" -$VisualSelect::tincr}
+    user add key Control-j {VisualSelect::TranslateCell "x"  $VisualSelect::tincr}
+    user add key Control-k {VisualSelect::TranslateCell "x" -$VisualSelect::tincr}
+    user add key Control-l {VisualSelect::TranslateCell "y"  $VisualSelect::tincr}
+    user add key Control-m {VisualSelect::TranslateCell "z" -$VisualSelect::tincr}
+    user add key Control-i {VisualSelect::TranslateCell "z"  $VisualSelect::tincr}
+    user add key Control-f {save_xyz $vsel [generate_filename \
+                   [file tail [file rootname [molinfo top get filename]]] xyz]}
+    user add key Control-g {save_xyz $vsel [molinfo top get filename]}
     if {[info exists vsel]} {
       Trace
     } else {
@@ -142,11 +151,16 @@ proc ::VisualSelect::Trace {args} {
 
 proc ::VisualSelect::Rotate {{ axis "z" } { inc 2 }} {
   global vsel
-  # global gc
-  set gc [measure center  $vsel]
-  $vsel moveby [vecscale -1 $gc]
+  global gc
+
+  if { [info exists gc] } {
+    set lgc $gc
+  } else {
+    set lgc [measure center $vsel]
+  }
+  $vsel moveby [vecscale -1 $lgc]
   $vsel move [transaxis $axis $inc]
-  $vsel moveby $gc
+  $vsel moveby $lgc
 }
 
 proc ::VisualSelect::Translate { {axis "z"} { inc 0.2 } } {
@@ -157,6 +171,18 @@ proc ::VisualSelect::Translate { {axis "z"} { inc 0.2 } } {
     set vec "0 $inc 0"
   } elseif {$axis == "z"} {
     set vec "0 0 $inc"
+  }
+  $vsel moveby $vec
+}
+
+proc ::VisualSelect::TranslateCell { {axis "z"} { inc 0.2 } } {
+  global vsel
+  if {$axis == "x"} {
+    set vec [vecscale $inc [lindex {*}[pbc get -namd] 0]]
+  } elseif {$axis == "y"} {
+    set vec [vecscale $inc [lindex {*}[pbc get -namd] 1]]
+  } elseif {$axis == "z"} {
+    set vec [vecscale $inc [lindex {*}[pbc get -namd] 2]]
   }
   $vsel moveby $vec
 }

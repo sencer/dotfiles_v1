@@ -1,4 +1,6 @@
 *.pyc
+*.zwc
+.zcompdump
 tags
 tmp/
 mail/mutt/aliases

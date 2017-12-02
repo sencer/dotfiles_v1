@@ -11,6 +11,7 @@ mailboxes "=bnl/INBOX" "=princeton/INBOX" "=gmail/INBOX" "+gmail/AllMail" \
 # default settings are princeton
 source bnl.muttrc
 
+folder-hook bnl.* source $HOME/.config/mutt/bnl.muttrc
 folder-hook gmail.* source $HOME/.config/mutt/gmail.muttrc
 folder-hook princeton.* source $HOME/.config/mutt/princeton.muttrc
 
