@@ -1,5 +1,5 @@
 set realname  = "Sencer Selcuk"
-set from      = selcuk@bnl.gov
+set from      = sselcuk@bnl.gov
 set spoolfile = +bnl/INBOX
 set postponed = +bnl/Drafts
 set record    = +bnl/SentItems
