@@ -451,6 +451,48 @@ proc solid_state_radii { {molid top} } {
   $sel delete
 }
 
+proc load_extra_data { {molid top} } {
+
+  set file [molinfo $molid get filename]
+
+  if { [file extension $file] != ".xyz" } {
+    puts "Implemented for xyz files only."
+    return 1
+  }
+  set f [open $file]
+  set nf [molinfo $molid get numframes]
+  set all [atomselect top all]
+
+  for {set i 0} {$i<$nf} {incr i} {
+    if { [gets $f nat] == -1 } {
+      puts "Frame $i not found, exiting."
+      return 1
+    }
+    if { [gets $f line] == -1 } {
+      puts "Incomplete frame $i, exiting."
+      return 1
+    }
+    set data ""
+    for {set j 0} {$j<$nat} {incr j} {
+      if { [gets $f line] == -1 } {
+        puts "Incomplete frame $i, exiting at atom $j."
+        return 1
+      }
+      set ll [llength $line]
+      if { $ll < 5 } { 
+        puts "Atom $j in frame $i does not contain data, exiting."
+        return 1
+      } else {
+        set data "$data [lindex $line 4]"
+      }
+    }
+    molinfo $molid set frame $i
+    $all set user $data
+  }
+  $all delete
+  return 0
+}
+
 # do initialization
 
 menu main on
