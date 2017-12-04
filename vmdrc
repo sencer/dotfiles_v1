@@ -317,6 +317,14 @@ proc save_reps {{pbc 0}} {
         puts $fildes "$prefix mol numperiodic \$molid $i [mol numperiodic $mol $i]"
       }
 
+      if {[mol colupdate $mol $i]} {
+        puts $fildes "$prefix mol colupdate \$molid $i 1"
+      }
+
+      if {[mol selupdate $mol $i]} {
+        puts $fildes "$prefix mol selupdate \$molid $i 1"
+      }
+
       if { ![mol showrep $mol $i] } {
         puts $fildes "$prefix mol showrep \$molid $i 0"
       }
