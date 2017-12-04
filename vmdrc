@@ -493,6 +493,58 @@ proc load_extra_data { {molid top} } {
   return 0
 }
 
+proc n_color_scale { n } {
+
+  if { $n>6 } {
+    puts ">6 not implemented yet."
+    return 1
+  } elseif { $n < 2 } {
+    puts "n should be at least 2"
+    return 1
+  }
+
+  global colors
+
+  if { ![info exists colors] } {
+    # rgb(227,26,28)
+    # rgb(31,120,181)
+    # rgb(51,161,43)
+    # rgb(255,255,153)
+    # rgb(107,61,153)
+    # rgb(255,128,0)
+    set colors {
+      {0.89 0.10 0.11}
+      {0.12 0.47 0.71}
+      {0.20 0.63 0.17}
+      {1.00 1.00 0.60}
+      {0.42 0.24 0.60}
+      {1.00 0.50 0.00}
+    }
+  }
+
+  set shift [colorinfo num]
+  display update off
+  set j [expr 1024/($n-1)]
+
+  for {set seg 0} {$seg < [expr $n-1] } { incr seg } {
+    for {set i 0} {$i < $j } { incr i} {
+    # interpolate the colors
+      set scale [expr ($i*1.0/$j)]
+      color change rgb [expr $seg*$j+$i+$shift] {*}[vecadd \
+        [vecscale [expr 1-$scale] [lindex $colors $seg]] \
+        [vecscale $scale          [lindex $colors [expr 1+$seg]]]
+      ]
+    }
+  }
+
+  set m [expr 1024-$j*($n-1)]
+  for {set i 0} {$i < $m } { incr i} {
+    color change rgb [expr $seg*$j+$i+$shift] {*}[lindex $colors $seg]
+  }
+
+  display update on
+}
+
 # do initialization
 
 menu main on
