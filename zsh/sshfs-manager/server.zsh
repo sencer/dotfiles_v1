@@ -4,11 +4,6 @@ local server=$1
 
 if [[ $1 == fix ]]; then
   echo "Trying to force remove sshfs connections."
-  # servers=( $(pgrep -a sshfs|cut -d' ' -f3) )
-  # for server in $servers; do
-  #   fusermount -u -z $HOME/${server%:}
-  #   rmdir $HOME/${server%:}
-  # done
 
   for server in $serverlist; do
     if grep -q $server /etc/mtab; then
