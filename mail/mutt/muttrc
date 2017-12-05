@@ -141,11 +141,11 @@ source $alias_file
 # theme
 #     field      foreground  background
 color normal     color223    color235 # main colors
-color indicator  color229    color239 # cursor line
+color indicator  color202    color187 # cursor line
 color tree       color223    color235 # thread arrows
 
 color index      color223 color235 ~A # all messages
-color index      color223 color237 ~v # messages flagged
+color index      color223 color241 ~v # collapsed thread
 color index      color229 color66  ~N # new messages
 color index      color229 color109 ~O # old messages, i.e. new but seen before
 color index      color229 color124 ~D # messages marked for deletion
