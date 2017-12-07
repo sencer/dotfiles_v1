@@ -138,36 +138,7 @@ set alias_file   = ~/.config/mutt/aliases
 set reverse_alias
 source $alias_file
 
-# theme
-#     field      foreground  background
-color normal     color223    color235 # main colors
-color indicator  color202    color187 # cursor line
-color tree       color223    color235 # thread arrows
-
-color index      color223 color235 ~A # all messages
-color index      color223 color241 ~v # collapsed thread
-color index      color229 color66  ~N # new messages
-color index      color229 color109 ~O # old messages, i.e. new but seen before
-color index      color229 color124 ~D # messages marked for deletion
-color index      color229 color106 ~T # messages tagged
-color index      color229 color208 ~F # messages flagged
-
-color markers    color223 color235
-color quoted     color246 color234
-color attachment color214 color235
-color status     color250 color66
-color tilde      color223 color234
-color error      color124 color235
-color message    color132 color235
-color signature  color250 color235
-
-color hdrdefault color223 color235
-color header     color167 color235 ^(Cc|Reply-To):
-
-color body       color142 color234 [\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+
-color body       color142 color234 (https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+
-# color bold       color039 color254
-# color underline  color141 color254
+source ~/.config/mutt/moonshine.mutt
 
 set nomarkers
 set date_format     = "[%m/%d/%y] [%I:%M%P]"
