@@ -2,13 +2,25 @@
 alternates 'sselcuk@.*princeton.edu' 'sencerselcuk@gmail.com' 'sencer@alumni.princeton.edu'
 
 set folder = "$HOME/.mail/"
-mailboxes "=bnl/INBOX" "=princeton/INBOX" "=gmail/INBOX" "+gmail/AllMail" \
-          "+gmail/BuildingNotifications" "+gmail/Drafts" "+gmail/Maintenance" \
-          "+gmail/Package" "+gmail/PsiK" "+gmail/SentMail" "+gmail/Starred" "+gmail/Trash" \
-          "+princeton/DeletedItems" "+princeton/Drafts"  "+princeton/JunkEMail"\
-          "+princeton/Outbox" "+princeton/SentItems"
+mailboxes "+bnl/INBOX" \
+          "+gmail/AllMail" \
+          "+gmail/BuildingNotifications" \
+          "+gmail/Drafts" \
+          "+gmail/INBOX" \
+          "+gmail/Maintenance" \
+          "+gmail/Package" \
+          "+gmail/PsiK" \
+          "+gmail/SentMail" \
+          "+gmail/Starred" \
+          "+gmail/Trash" \
+          "+princeton/DeletedItems" \
+          "+princeton/Drafts" \
+          "+princeton/INBOX" \
+          "+princeton/JunkEMail" \
+          "+princeton/Outbox" \
+          "+princeton/SentItems"
 
-# default settings are princeton
+# default settings are brookhaven
 source bnl.muttrc
 
 folder-hook bnl.* source $HOME/.config/mutt/bnl.muttrc
