@@ -2,20 +2,32 @@
 alternates 'sselcuk@.*princeton.edu' 'sencerselcuk@gmail.com' 'sencer@alumni.princeton.edu'
 
 set folder = "$HOME/.mail/"
-mailboxes "=bnl/INBOX" "=princeton/INBOX" "=gmail/INBOX" "+gmail/AllMail" \
-          "+gmail/BuildingNotifications" "+gmail/Drafts" "+gmail/Maintenance" \
-          "+gmail/Package" "+gmail/PsiK" "+gmail/SentMail" "+gmail/Starred" "+gmail/Trash" \
-          "+princeton/DeletedItems" "+princeton/Drafts"  "+princeton/JunkEMail"\
-          "+princeton/Outbox" "+princeton/SentItems"
+mailboxes "+bnl/INBOX" \
+          "+gmail/AllMail" \
+          "+gmail/BuildingNotifications" \
+          "+gmail/Drafts" \
+          "+gmail/INBOX" \
+          "+gmail/Maintenance" \
+          "+gmail/Package" \
+          "+gmail/PsiK" \
+          "+gmail/SentMail" \
+          "+gmail/Starred" \
+          "+gmail/Trash" \
+          "+princeton/DeletedItems" \
+          "+princeton/Drafts" \
+          "+princeton/INBOX" \
+          "+princeton/JunkEMail" \
+          "+princeton/Outbox" \
+          "+princeton/SentItems"
 
-# default settings are princeton
+# default settings are brookhaven
 source bnl.muttrc
 
 folder-hook bnl.* source $HOME/.config/mutt/bnl.muttrc
 folder-hook gmail.* source $HOME/.config/mutt/gmail.muttrc
 folder-hook princeton.* source $HOME/.config/mutt/princeton.muttrc
 
-set header_cache     = ~/.cache/mutt/
+set header_cache = ~/.cache/mutt/
 set message_cachedir = ~/.cache/mutt/
 set nomove
 
@@ -55,7 +67,7 @@ set pipe_decode
 set pipe_sep = "\n#### NEXT E-MAIL ####\n"
 
 # sidebar
-# set sidebar_width   = 20
+# set sidebar_width = 20
 # set sidebar_visible = yes
 # macro index \Cp "<sidebar-prev><sidebar-open>" "Open prev mail box"
 # macro index \Cn "<sidebar-next><sidebar-open>" "Open next mail box"
@@ -63,13 +75,13 @@ set pipe_sep = "\n#### NEXT E-MAIL ####\n"
 # key bindings
 bind index,pager a group-reply
 
-bind index       g first-entry
-bind index       G last-entry
-bind pager       g top
-bind pager       G bottom
+bind index g first-entry
+bind index G last-entry
+bind pager g top
+bind pager G bottom
 
-bind index,pager       J next-thread
-bind index,pager       K previous-thread
+bind index,pager J next-thread
+bind index,pager K previous-thread
 
 bind index - collapse-thread
 bind index _ collapse-all
@@ -85,7 +97,7 @@ bind index,pager / vfolder-from-query
 bind index,pager + entire-thread
 bind index,pager L modify-labels
 
-bind attach <return>    view-mailcap
+bind attach <return> view-mailcap
 
 # how to show mail
 alternative_order text/plain text/enriched text/html 
@@ -134,17 +146,17 @@ set save_history = 1000
 set history_file = ~/.cache/mutt/mutt_history
 
 # aliases
-set alias_file   = ~/.config/mutt/aliases
+set alias_file = ~/.config/mutt/aliases
 set reverse_alias
 source $alias_file
 
 source ~/.config/mutt/moonshine.mutt
 
 set nomarkers
-set date_format     = "[%m/%d/%y] [%I:%M%P]"
-set folder_format="%2C %t %N %8s %d %f"
+set date_format = "[%m/%d/%y] [%I:%M%P]"
+set folder_format = "%2C %t %N %8s %d %f"
 set index_format = "%3C [%Z] %D %-20.18F //   %s"# "%?X?[%X]& ?" for attachments.
-set alias_format    = "%4n %t %-20a %r"
+set alias_format = "%4n %t %-20a %r"
 set status_format = "%r--[%f]--[Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del\
 :%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%\
 P)---"
@@ -155,34 +167,34 @@ set to_chars = " >~c<l"
 # crypto
 set crypt_replysign= yes
 set crypt_replysignencrypted= yes
-set pgp_autoinline      = no
-set pgp_auto_decode     = yes
-set pgp_check_exit      = yes
-set pgp_entry_format    = "%4n %t%f %4l/0x%k %-4a %2c %u"
-set pgp_good_sign       = "Good signature from"
-set pgp_ignore_subkeys  = yes
-set pgp_long_ids        = no # mutt uses full fingerprint internally
-set pgp_mime_auto       = no
-set pgp_replyinline     = no
+set pgp_autoinline = no
+set pgp_auto_decode = yes
+set pgp_check_exit = yes
+set pgp_entry_format = "%4n %t%f %4l/0x%k %-4a %2c %u"
+set pgp_good_sign = "Good signature from"
+set pgp_ignore_subkeys = yes
+set pgp_long_ids = no # mutt uses full fingerprint internally
+set pgp_mime_auto = no
+set pgp_replyinline = no
 set pgp_retainable_sigs = yes
-set pgp_show_unusable   = no
-set pgp_sign_as         = "Sencer Selcuk"
-set pgp_sort_keys       = address
-set pgp_strict_enc      = yes
-set pgp_timeout         = 21600 # Remember PGP passphrase for 6 hours
+set pgp_show_unusable = no
+set pgp_sign_as = "Sencer Selcuk"
+set pgp_sort_keys = address
+set pgp_strict_enc = yes
+set pgp_timeout = 21600 # Remember PGP passphrase for 6 hours
 
 
-set pgp_use_gpg_agent        = yes
-set pgp_decode_command       = "gpg2 --status-fd=2 %?p?--passphrase-fd 0? --quiet --batch --output - %f"
-set pgp_decrypt_command      = "gpg2 --status-fd=2 %?p?--passphrase-fd 0? --quiet --batch --output - %f"
+set pgp_use_gpg_agent = yes
+set pgp_decode_command = "gpg2 --status-fd=2 %?p?--passphrase-fd 0? --quiet --batch --output - %f"
+set pgp_decrypt_command = "gpg2 --status-fd=2 %?p?--passphrase-fd 0? --quiet --batch --output - %f"
 set pgp_encrypt_only_command = "/opt/software/neomutt/pgpewrap gpg2 --batch --quiet --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
 set pgp_encrypt_sign_command = "/opt/software/neomutt/pgpewrap gpg2 %?p?--passphrase-fd 0? --batch --quiet --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
 set pgp_encrypt_sign_command = "/opt/software/neomutt/pgpewrap gpg2 %?p?--passphrase-fd 0? --batch --quiet --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
-set pgp_export_command       = "gpg2 --export --armor %r"
-set pgp_getkeys_command      = "gpg --search-keys %r"
-set pgp_import_command       = "gpg2 --import -v %f"
+set pgp_export_command = "gpg2 --export --armor %r"
+set pgp_getkeys_command = "gpg --search-keys %r"
+set pgp_import_command = "gpg2 --import -v %f"
 set pgp_list_pubring_command = "gpg2 --with-colons --with-fingerprint --list-keys %r"
 set pgp_list_secring_command = "gpg2 --with-colons --with-fingerprint --list-secret-keys %r"
-set pgp_sign_command         = "gpg2 --comment 'I welcome encrypted mail.' --batch --output - %?p?--passphrase-fd 0? --armor --detach-sign --textmode %?a?-u %a? %f"
-set pgp_verify_command       = "gpg2 --status-fd=2 --quiet --batch --output - --verify %s %f"
-set pgp_verify_key_command   = "gpg2 --verbose --batch --fingerprint --check-sigs %r"
+set pgp_sign_command = "gpg2 --comment 'I welcome encrypted mail.' --batch --output - %?p?--passphrase-fd 0? --armor --detach-sign --textmode %?a?-u %a? %f"
+set pgp_verify_command = "gpg2 --status-fd=2 --quiet --batch --output - --verify %s %f"
+set pgp_verify_key_command = "gpg2 --verbose --batch --fingerprint --check-sigs %r"
