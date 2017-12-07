@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-notmuch new
+res=$(notmuch new)
+
+if [[ "$res" == "No new mail." ]]; then
+  exit 0
+fi
 
 for ffolder in $HOME/.mail/princeton/*; do
   folder=${ffolder##*/}
@@ -14,6 +18,21 @@ for ffolder in $HOME/.mail/princeton/*; do
     notmuch tag -new +junk +princeton folder:"princeton/$folder" and is:new
   else
     notmuch tag -new +princeton folder:"princeton/$folder" and is:new
+  fi
+done
+
+for ffolder in $HOME/.mail/bnl/*; do
+  folder=${ffolder##*/}
+  if [[ $folder == INBOX ]]; then
+    notmuch tag -new +inbox +bnl folder:"bnl/$folder" and is:new
+  elif [[ $folder == SentItems ]]; then
+    notmuch tag -new +sent +bnl folder:"bnl/$folder" and is:new
+  elif [[ $folder == DeletedItems ]]; then
+    notmuch tag -new +deleted +bnl folder:"bnl/$folder" and is:new
+  elif [[ $folder == JunkEMail ]]; then
+    notmuch tag -new +junk +bnl folder:"bnl/$folder" and is:new
+  else
+    notmuch tag -new +bnl folder:"bnl/$folder" and is:new
   fi
 done
 
