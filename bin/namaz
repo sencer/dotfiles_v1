@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $(tail -1 $HOME/.dotfiles/tmp/city) -lt $(($(date +%s)-3600)) ]]; then
+if [[ ! -f $HOME/.dotfiles/tmp/city || $(tail -1 $HOME/.dotfiles/tmp/city) -lt $(($(date +%s)-3600)) ]]; then
   $HOME/.dotfiles/tool/cities.sh
 fi
 CITY=$(head -1 $HOME/.dotfiles/tmp/city)
