@@ -317,11 +317,11 @@ proc save_reps {{pbc 0}} {
         puts $fildes "$prefix mol numperiodic \$molid $i [mol numperiodic $mol $i]"
       }
 
-      if {[mol colupdate $mol $i]} {
+      if {[mol colupdate $i $mol]} {
         puts $fildes "$prefix mol colupdate \$molid $i 1"
       }
 
-      if {[mol selupdate $mol $i]} {
+      if {[mol selupdate $i $mol]} {
         puts $fildes "$prefix mol selupdate \$molid $i 1"
       }
 
