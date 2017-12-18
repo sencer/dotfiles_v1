@@ -213,7 +213,7 @@ proc save_poscar { sel fname } {
 
   foreach atom [lsort -index 0 [$sel get {element x y z}]] {
     set atom [coordtrans $inv [lrange $atom 1 3]]
-    puts $atom
+
     puts $fildes [format "%14.10f %14.10f %14.10f"  \
       [expr [lindex $atom 0] - $shift($molid,0)] \
       [expr [lindex $atom 1] - $shift($molid,1)] \
