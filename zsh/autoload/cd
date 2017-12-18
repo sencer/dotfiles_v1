@@ -7,7 +7,7 @@ elif builtin cd "${1%/*}" 2> /dev/null; then
 fi
 
 if [[ -n $CURRENTSERVER ]]; then
-  local arg=${1//-/__}
+  local arg="_${1//-/__}"
 
   if builtin cd "$arg" 2>/dev/null; then
     echo "Entering the saved job directory"
