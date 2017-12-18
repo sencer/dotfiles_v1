@@ -3,6 +3,8 @@ alternates 'sselcuk@.*princeton.edu' 'sencerselcuk@gmail.com' 'sencer@alumni.pri
 
 set folder = "$HOME/.mail/"
 mailboxes "+bnl/INBOX" \
+          "+bnl/Archive" \
+          "+bnl/SentItems" \
           "+gmail/AllMail" \
           "+gmail/BuildingNotifications" \
           "+gmail/Drafts" \

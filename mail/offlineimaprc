@@ -58,7 +58,7 @@ remotehost       = mail.bnl.gov
 remoteuser       = sselcuk@bnl.gov
 remotepasseval   = get_pass('bnl')
 sslcacertfile    = /etc/ssl/certs/ca-certificates.crt
-folderfilter     = lambda folder: not (folder.startswith('Sync Issues') or folder.startswith('Archive') or folder in [ 'Contacts', 'PWSCF', 'Tasks', 'Calendar', 'Notes', 'Journal', 'RSS Feeds'])
+folderfilter     = lambda folder: not (folder.startswith('Sync Issues') or folder in [ 'Contacts', 'PWSCF', 'Tasks', 'Calendar', 'Notes', 'Journal', 'RSS Feeds'])
 nametrans        = lambda folder: folder.replace(" ", "").replace("-", "")
 
 [Repository bnl-local]
