@@ -176,6 +176,55 @@ proc save_xyz { sel fname {all 0}} {
   return 0
 }
 
+proc save_poscar { sel fname } {
+  global shift
+  set molid [$sel molid]
+
+  if { [molinfo $molid get a] > 0 } {
+    set inv [transtranspose [invert_3d {*}[pbc get -namd -molid $molid]]]
+  } else {
+    puts "No cell dimensions found. Exiting."
+    return 1
+  }
+
+  set fildes [open $fname w]
+
+  # header
+  set count [lcount [lsort [$sel get element]]]
+  puts $fildes "$count"
+  puts $fildes 1.00
+
+  # unit cell information
+  set pbc {*}[pbc get -namd -molid $molid]
+  foreach abc $pbc {
+    puts $fildes [format "  %14.10f %14.10f %14.10f" {*}$abc]
+  }
+
+  set spec ""
+  set cnt  ""
+  foreach {s c} $count {
+    set spec "$spec $s"
+    set cnt "$cnt $c"
+  }
+  puts $fildes "$spec"
+  puts $fildes "$cnt"
+
+  puts $fildes "Direct"
+
+  foreach atom [$sel get {x y z}] {
+    set atom [coordtrans $inv $atom]
+    puts $fildes [format "%14.10f %14.10f %14.10f"  \
+      [expr [lindex $atom 0] - $shift($molid,0)] \
+      [expr [lindex $atom 1] - $shift($molid,1)] \
+      [expr [lindex $atom 2] - $shift($molid,2)] \
+    ]
+  }
+
+  close $fildes
+  puts "Written $fname"
+  return 0
+}
+
 proc set_cell_from_vecs { dm ldm } {
   # remove parens, and overwrite dm
   regsub -all {\(|\)} $dm "" dm
