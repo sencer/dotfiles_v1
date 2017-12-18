@@ -177,19 +177,19 @@ proc save_xyz { sel fname {all 0}} {
 }
 
 proc set_cell_from_vecs { dm ldm } {
-    # remove parens, and overwrite dm
-    regsub -all {\(|\)} $dm "" dm
-    set a [lrange $dm 1 3]
-    set b [lrange $dm 4 6]
-    set c [lrange $dm 7 10]
+  # remove parens, and overwrite dm
+  regsub -all {\(|\)} $dm "" dm
+  set a [lrange $dm 1 3]
+  set b [lrange $dm 4 6]
+  set c [lrange $dm 7 10]
 
-    if { $ldm < 10 } {
-      set c "0 0 100"
-    }
-    if { $ldm < 6 } {
-      set b "0 100 0"
-    }
-    pbc set "{$a} {$b} {$c}" -namd
+  if { $ldm < 10 } {
+    set c "0 0 100"
+  }
+  if { $ldm < 6 } {
+    set b "0 100 0"
+  }
+  pbc set "{$a} {$b} {$c}" -namd
 }
 
 proc set_xyz_cell { molid {var 0} } {
