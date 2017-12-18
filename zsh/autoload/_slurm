@@ -36,7 +36,7 @@ _slurm_complete() {
 
 _get_jobs() {
   local arr
-  arr=($(_call_program alias "squeue -h -o \'%i:%j\(%T\)\' -u sselcuk"))
+  arr=($(_call_program alias "squeue -h -o \'%i:%j\(%T\)\' -u $USER"))
   _describe "Job Id" arr
 }
 

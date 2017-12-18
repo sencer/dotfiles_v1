@@ -20,9 +20,9 @@ if [[ -n $CURRENTSERVER ]]; then
   if [[ -n "$jobd" ]]; then
 
     if [[ "$jobd" == *cscr* ]]; then
-      jobd="$HOME/$CURRENTSERVER/cscr/${jobd#*sselcuk/}"
+      jobd="$HOME/$CURRENTSERVER/cscr/${jobd#*$USER/}"
     elif [[ "$jobd" == *gpfs* ]]; then
-      jobd="$HOME/$CURRENTSERVER/gpfs/${jobd#*sselcuk/}"
+      jobd="$HOME/$CURRENTSERVER/gpfs/${jobd#*$USER/}"
     fi
 
     if builtin cd "$jobd" 2>/dev/null; then

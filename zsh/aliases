@@ -67,9 +67,9 @@ state-clean() {
 
 q() {
   if (( $# )); then
-    CURRENTSERVER=$1 squeue -u sselcuk
+    CURRENTSERVER=$1 squeue -u $USER
   else
-    squeue -u sselcuk
+    squeue -u $USER
   fi
 }
 

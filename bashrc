@@ -14,7 +14,7 @@ eval "$(dircolors -b ~/.dotfiles/zsh/dircolors)"
 [ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-source /home/sselcuk/.dotfiles/zsh/aliases
+source $HOME/.dotfiles/zsh/aliases
 
 export EDITOR=nvim
 export VISUAL=nvim
