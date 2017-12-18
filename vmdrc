@@ -545,6 +545,12 @@ proc n_color_scale { n } {
   display update on
 }
 
+ proc lcount list {
+    set count {}
+    foreach element $list {dict incr count $element}
+    set count
+ }
+
 # do initialization
 
 menu main on
