@@ -493,6 +493,17 @@ proc load_extra_data { {molid top} } {
   return 0
 }
 
+proc invert_3d { matrix } {
+  if { [llength $matrix] == 3 } {
+    lassign $matrix a b c
+    lappend a 0
+    lappend b 0
+    lappend c 0
+    set matrix "{$a} {$b} {$c} {0 0 0 1}"
+  }
+  return [measure inverse $matrix]
+}
+
 proc n_color_scale { n } {
 
   if { $n>6 } {
