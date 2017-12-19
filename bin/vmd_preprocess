@@ -31,6 +31,8 @@ while (( $# )); do
     # pwo, last coor
     shift
     generate_tmp_file "$1" xsf "pwo2xsf -lc"
+  elif [[ $1 == *CAR ]]; then
+    args="$args -$1 $1"
   else
     args="$args $1"
   fi
