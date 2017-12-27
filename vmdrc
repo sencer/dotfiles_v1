@@ -528,6 +528,8 @@ proc load_extra_data { {molid top} } {
       return 1
     }
     set data ""
+    set data1 ""
+    set data2 ""
     for {set j 0} {$j<$nat} {incr j} {
       if { [gets $f line] == -1 } {
         puts "Incomplete frame $i, exiting at atom $j."
@@ -539,10 +541,22 @@ proc load_extra_data { {molid top} } {
         return 1
       } else {
         set data "$data [lindex $line 4]"
+        if { $ll > 5 } {
+          set data1 "$data1 [lindex $line 5]"
+        }
+        if { $ll > 6 } {
+          set data2 "$data2 [lindex $line 6]"
+        }
       }
     }
     molinfo $molid set frame $i
     $all set user $data
+    if { $ll > 5 } {
+      $all set user2 $data1
+    }
+    if { $ll > 6 } {
+      $all set user3 $data2
+    }
   }
   $all delete
   return 0
