@@ -345,8 +345,6 @@ HISTFILE="$HOME/.dotfiles/tmp/history"
 HISTSIZE=12000
 SAVEHIST=10000
 
-path=($HOME/bin $HOME/.cargo/bin /opt/conda/bin $path)
-
 fpath=($ZDOTDIR/autoload $ZDOTDIR/zsh-completions/src $fpath)
 for i ($ZDOTDIR/autoload/^_*(:t)) autoload -U $i
 

@@ -20,3 +20,5 @@ export LESSCLOSE="$HOME/.dotfiles/zsh/lesspipe %s %s"
 export AWKPATH=/opt/software/awkscr
 
 typeset -gU cdpath fpath mailpath path
+path=($HOME/bin $HOME/.cargo/bin /opt/conda/bin $path)
+
