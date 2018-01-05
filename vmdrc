@@ -708,6 +708,10 @@ proc init_mol_proxy {dummy molid dummy2} {
 
 proc initialize_molecule {molid} {
 
+  if { [lsearch [molinfo list] $molid] == -1 } {
+    return -1
+  }
+
   global dont_source_view_vmd
 
   if { ![info exists dont_source_view_vmd] && (
