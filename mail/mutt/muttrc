@@ -81,6 +81,15 @@ bind index g first-entry
 bind index G last-entry
 bind pager g top
 bind pager G bottom
+bind pager \Cf next-page
+bind pager \Cb previous-page
+macro pager \Cu "\
+:set my_tmp_pipe_decode=\$pipe_decode\n\
+:set pipe_decode\n\
+|urlview\n\
+:set pipe_decode=\$my_tmp_pipe_decode\n\
+:unset my_tmp_pipe_decode\n" \
+'call urlview to extract URLs out of a message'
 
 bind index,pager J next-thread
 bind index,pager K previous-thread
@@ -136,7 +145,7 @@ set delete
 
 # index
 set uncollapse_jump #jump to first unread in the thread.
-
+set sleep_time = 0
 set menu_scroll
 # set query_command = "~/bin/ph %s 2>/dev/null"
 # set ispell="aspell -e -c"
