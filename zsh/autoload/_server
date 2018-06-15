@@ -1,1 +1,3 @@
-../sshfs-manager/_server
+#compdef server
+
+_alternative "args:servers:($serverlist)"
