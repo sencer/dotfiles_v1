@@ -54,17 +54,17 @@ quick            = 3
 
 [Repository bnl-remote]
 type             = IMAP
-remotehost       = mail.bnl.gov
+remotehost       = outlook.office365.com
 remoteuser       = sselcuk@bnl.gov
 remotepasseval   = get_pass('bnl')
 sslcacertfile    = /etc/ssl/certs/ca-certificates.crt
-folderfilter     = lambda folder: not (folder.startswith('Sync Issues') or folder in [ 'Contacts', 'PWSCF', 'Tasks', 'Calendar', 'Notes', 'Journal', 'RSS Feeds'])
-nametrans        = lambda folder: folder.replace(" ", "").replace("-", "")
+folderfilter     = lambda folder: not any(folder.startswith(i) for i in ['Conversation', 'Hiri', 'Calendar', 'Journal', 'Contacts'])
+nametrans        = lambda folder: folder.replace(" ", "")
 
 [Repository bnl-local]
 type             = Maildir
 localfolders     = ~/.mail/bnl/
-nametrans        = lambda folder: folder.replace("Item", " Item").replace("EMail", " E-Mail")
+nametrans        = lambda folder: folder.replace("Item", " Item").replace("Email", " Email")
 
 [mbnames]
 enabled          = no
