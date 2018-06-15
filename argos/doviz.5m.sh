@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 function bloomberg {
   curl -s https://www.bloomberg.com/markets/api/quote-page/${1}:CUR | jq '.["basicQuote"]|[.price, .lowPrice, .highPrice, .priceTime ]|@sh'|xargs
 }
