@@ -16,7 +16,7 @@ setopt AUTO_CD AUTO_PUSHD CDABLE_VARS PUSHD_IGNORE_DUPS PUSHD_TO_HOME  \
   HIST_REDUCE_BLANKS HIST_SAVE_NO_DUPS HIST_VERIFY CORRECT \
   NO_FLOW_CONTROL INTERACTIVE_COMMENTS MAIL_WARNING RC_QUOTES AUTO_CONTINUE \
   NO_HUP LONG_LIST_JOBS PROMPT_BANG PROMPT_SUBST TRANSIENT_RPROMPT \
-  COMBINING_CHARS
+  COMBINING_CHARS EXTENDED_HISTORY
 # }}}
 
 # Completion Styles from zprezto {{{
@@ -253,7 +253,8 @@ bindkey -M viins "\e[3;3~" backward-kill-line  #  alt  del
 bindkey -M viins "\C-z" undo
 
 # add surround-operation to zle {{{
-autoload -Uz surround && surround
+autoload -Uz surround
+zle -N surround
 zle -N delete-surround surround
 zle -N add-surround surround
 zle -N change-surround surround
@@ -262,6 +263,21 @@ bindkey -a ds delete-surround
 bindkey -a ys add-surround
 bindkey -M visual S add-surround
 # }}}
+
+# bracket/quote text objects {{{
+autoload -U select-bracketed select-quoted
+zle -N select-bracketed
+zle -N select-quoted
+  for km in viopp visual; do
+  bindkey -M $km -- '-' vi-up-line-or-history
+  for c in {a,i}"${(s..):-\'\"\`\|,./:;-=+@}"; do
+    bindkey -M $km $c select-quoted
+  done
+  for c in {a,i}${(s..):-'()[]{}<>bB'}; do
+    bindkey -M $km $c select-bracketed
+  done
+done
+#}}}
 
 # clipboard integration {{{
 [[ -n $DISPLAY ]] && (( $+commands[xclip] )) && {
