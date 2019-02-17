@@ -241,9 +241,9 @@ proc set_cell_from_vecs { dm ldm {all 0} } {
   }
 
   if { $all } {
-    pbc set "{$a} {$b} {$c}" -namd -all
+    pbc set "{$a} {$b} {$c}" -namd -all -alignx
   } else {
-    pbc set "{$a} {$b} {$c}" -namd
+    pbc set "{$a} {$b} {$c}" -namd -alignx
   }
 }
 
