@@ -28,13 +28,17 @@ proc show_dynamic { molid } {
   mol addrep $molid
 
   if { [molinfo $molid get filetype] == "cube" } {
-    mol representation Isosurface  0.01 0 0 0 1 1
-    mol color ColorID 0
+    mol material Diffuse
+
+    mol representation Isosurface  0.005 0 0 0 1 1
+    mol color ColorID 10
     mol addrep $molid
 
-    mol representation Isosurface -0.01 0 0 0 1 1
-    mol color ColorID 4
+    mol representation Isosurface -0.005 0 0 0 1 1
+    mol color ColorID 9
     mol addrep $molid
+
+    mol material Opaque
   }
 }
 
@@ -47,13 +51,17 @@ proc show_cpk { molid } {
   mol addrep $molid
 
   if { [molinfo $molid get filetype] == "cube" } {
-    mol representation Isosurface  0.01 0 0 0 1 1
-    mol color ColorID 0
+    mol material Diffuse
+
+    mol representation Isosurface  0.005 0 0 0 1 1
+    mol color ColorID 10
     mol addrep $molid
 
-    mol representation Isosurface -0.01 0 0 0 1 1
-    mol color ColorID 4
+    mol representation Isosurface -0.005 0 0 0 1 1
+    mol color ColorID 9
     mol addrep $molid
+
+    mol material Opaque
   }
 }
 
