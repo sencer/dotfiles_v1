@@ -6,10 +6,12 @@ kalan=($($namaz kalan))
 echo "${kalan[0]:-_}"
 echo "---"
 
-if [[ $(tail -1 $HOME/.dotfiles/tmp/city) -lt $(($(date +%s)-3600)) ]]; then
+if [[ $(tail -1 $HOME/.dotfiles/tmp/city) -lt $(($(date +%s)-300)) ]]; then
   $HOME/.dotfiles/tool/cities.sh
 fi
-CITY=$(head -1 $HOME/.dotfiles/tmp/city)
+CITY=($(head -1 $HOME/.dotfiles/tmp/city))
+ICITY=${CITY[@]:1}
+CITY=${CITY[0]}
 
 FILE="$HOME/.dotfiles/tmp/namaz.${CITY}"
 isim=( Sabah Imsak Ogle Ikindi Aksam Yatsi Sabah Imsak Ogle Ikindi Aksam Yatsi )
@@ -19,9 +21,10 @@ last=7
 # isim=( Sabah İmsak Öğle İkindi Akşam Yatsı )
 if [[ ${next[1]} == 7 ]]; then
   first=7
-  last=14
+  last=13
 fi
 
+echo $ICITY
 while read line; do
   let i++
   if [[ $i -lt $first ]]; then

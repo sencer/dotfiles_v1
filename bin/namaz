@@ -3,7 +3,8 @@
 if [[ ! -f $HOME/.dotfiles/tmp/city || $(tail -1 $HOME/.dotfiles/tmp/city) -lt $(($(date +%s)-3600)) ]]; then
   $HOME/.dotfiles/tool/cities.sh
 fi
-CITY=$(head -1 $HOME/.dotfiles/tmp/city)
+CITY=($(head -1 $HOME/.dotfiles/tmp/city))
+CITY=${CITY[0]}
 
 DATAFILE=$HOME/.dotfiles/tmp/namaz.${CITY}
 
