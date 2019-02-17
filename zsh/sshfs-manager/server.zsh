@@ -41,15 +41,15 @@ else
   fi
   mkdir -p $HOME/$server
   local sshfs_options=(
-  auto_cache
-  reconnect
-  transform_symlinks
-  follow_symlinks
-  workaround=rename
-  idmap=user
-  cache_timeout=7200
-  attr_timeout=7200
-  ssh_command="ssh -S none"
+    auto_cache
+    reconnect
+    transform_symlinks
+    follow_symlinks
+    workaround=rename
+    idmap=user
+    cache_timeout=90
+    attr_timeout=7200
+    ssh_command="ssh -S none"
   )
   if sshfs $server: $HOME/$server -o${(j:,:)sshfs_options}; then
     echo "$server successfuly mounted"
