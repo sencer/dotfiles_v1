@@ -65,6 +65,22 @@ proc show_cpk { molid } {
   }
 }
 
+proc show_sensors { molid } {
+
+  mol representation VDW 0.3 18.0
+  mol color Element
+  mol selection not name He
+  mol material Opaque
+  mol addrep $molid
+
+  mol representation VDW 0.100000 18.000000
+  mol color ColorID 7
+  mol selection name He
+  mol material Diffuse
+  mol addrep $molid
+
+}
+
 # utility functions
 proc reload { {molid top} } {
 
@@ -673,6 +689,7 @@ proc initialize_vmd {} {
   user add key F1 { load_saved_reps top }
   user add key F2 { set_preset dynamic }
   user add key F3 { set_preset cpk }
+  user add key F4 { set_preset sensors }
 
   # manage pbc tools
 
