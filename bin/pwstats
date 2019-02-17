@@ -34,6 +34,8 @@ get_stats() {
         }
         {
           switch($0) {
+            case /Forces acting on atoms/: force_flag=1; break
+            case /The non-local contrib./: force_flag=0; break
             case /number of atoms/: nat=$5; break
             case /starts/: run++; break
             case /!/: e = $5; break
@@ -44,7 +46,7 @@ get_stats() {
             case /pico-seconds/: if(NF>4){ionic=$5; tot++}; t = $(NF-1); break
             case /number of bfgs/: ionic = $6; tot++; break
             case /Entering Dynamics/:  ionic = $5; tot++;break
-            case /atom.*force =/: maxf = max(maxf, $7, $8, $9); break
+            case /atom.*force =/: if(force_flag)maxf = max(maxf, $7, $8, $9); break
             case /ATOMIC_POSITIONS/: p(); break
             default: break
           }
