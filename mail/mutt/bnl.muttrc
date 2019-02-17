@@ -5,6 +5,6 @@ set postponed = +bnl/Drafts
 set record    = +bnl/SentItems
 set trash     = +bnl/DeletedItems
 macro index,pager e <save-message>=bnl/Archive\n
-macro index,pager <F5> "!offlineimap -o -a BNL"
+macro index,pager <F5> "!offlineimap -q -u quiet -o -a BNL<enter>"
 
 # vi: ft=muttrc

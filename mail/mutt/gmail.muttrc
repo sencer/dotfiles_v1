@@ -4,8 +4,8 @@ set spoolfile = +gmail/INBOX
 set postponed = +gmail/Drafts
 set record    = +gmail/SentMail
 set trash     = +gmail/Trash
-macro index,pager e <save-message>=+AllMail
+macro index,pager e <save-message>=gmail/AllMail<enter>
 # macro index d "<modify-labels>+\\\Trash -inbox -unread\n<delete-message>"
-macro index,pager <F5> "!offlineimap -o -a Gmail"
+macro index,pager <F5> "!offlineimap -q -u quiet -o -a Gmail<enter>"
 
 # vi: ft=muttrc
