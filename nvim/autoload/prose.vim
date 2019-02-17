@@ -1,7 +1,6 @@
 function! prose#setup()
   setlocal wrap
   setlocal spell
-  setlocal background=light
   setlocal foldlevel=99
   setlocal scrolloff=999
   setlocal nocindent
