@@ -1,7 +1,7 @@
 [general]
 ui               = BlinkenLights
 pythonfile       = ~/.dotfiles/mail/imap-pass.py
-accounts         = Princeton,Gmail,BNL
+accounts         = Gmail,BNL
 maxsyncaccounts  = 3
 
 [Account Gmail]
@@ -19,32 +19,14 @@ remoteuser       = sencerselcuk@gmail.com
 remotepasseval   = get_pass('gmail-app')
 sslcacertfile    = /etc/ssl/certs/ca-certificates.crt
 nametrans        = lambda folder: folder.replace("[Gmail]/", "").replace(" ", "")
+sync_deletes = yes
+synclabels = yes
+realdelete=yes
 
 [Repository gmail-local]
 type             = GmailMaildir
 localfolders     = ~/.mail/gmail/
 nametrans        = lambda folder: ("[Gmail]/"+folder if folder in ["SentMail", "AllMail", "Starred", "Drafts", "Trash"] else folder).replace("Mail", " Mail")
-
-[Account Princeton]
-localrepository  = princeton-local
-remoterepository = princeton-remote
-autorefresh      = 1
-quick            = 3
-postsynchook     = ~/.dotfiles/mail/tag-new-messages.sh
-
-[Repository princeton-remote]
-type             = IMAP
-remotehost       = exchangeimap.princeton.edu
-remoteuser       = sselcuk@princeton.edu
-remotepasseval   = get_pass('princeton')
-cert_fingerprint = 0855b2039ba7540c2f53f186bfc34fde80468fad
-folderfilter     = lambda folder: not (folder.startswith('Sync Issues') or folder.startswith('Archive') or folder in [ 'Contacts', 'PWSCF', 'Tasks', 'Calendar', 'Notes', 'Journal', 'RSS Feeds'])
-nametrans        = lambda folder: folder.replace(" ", "").replace("-", "")
-
-[Repository princeton-local]
-type             = Maildir
-localfolders     = ~/.mail/princeton/
-nametrans        = lambda folder: folder.replace("Item", " Item").replace("EMail", " E-Mail")
 
 [Account BNL]
 localrepository  = bnl-local
