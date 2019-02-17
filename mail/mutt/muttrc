@@ -113,9 +113,9 @@ set narrow_tree
 set ignore_linear_white_space
 
 # threads with newest on top
-set sort=threads
 set strict_threads=yes
-set sort_aux=reverse-last-date-received
+set sort=reverse-threads
+set sort_aux=last-date-received
 
 # pager settings
 set pager_context=2
