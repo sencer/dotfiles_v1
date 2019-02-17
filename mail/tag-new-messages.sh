@@ -40,8 +40,8 @@ for file in $(notmuch search --output=files is:new); do
 
   keys=+$(command grep '^X-Keywords:' "$file"|cut -c13-|command sed -r 's/\\//g;s/,/ +/g'|tr '[:upper:]' '[:lower:]')
 
+  id=$(sed -n '/^message-id/I{N;s/^[^<]*<//;s/>.*$//;p;q}' "$file")
   if [[ ${keys} != "+" ]]; then
-    id=$(sed -n '/^message-id/I{s/^.*<//;s/>.*$//;p;q}' "$file")
 
     if [[ -z "$id" || "$id" == Message-ID* ]]; then
       id=notmuch-sha1-$(sha1sum "$file"|cut -d' ' -f1)
