@@ -36,6 +36,7 @@ alias xo='xcrysden --pwo'
 
 alias vmd='vmd_preprocess'
 alias mutt="export MTMPDIR=\$(mktemp -p $TMPDIR -d mutt.XXXXXXXXXX); mutt; rm -rf \$MTMPDIR"
+alias plot="gnuplot"
 
 alias hgrep="history 0|grep"
 alias xgrep="xargs grep"
