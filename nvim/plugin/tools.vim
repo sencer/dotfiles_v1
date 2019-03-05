@@ -75,25 +75,32 @@ let &cpo = s:save_cpo | unlet s:save_cpo
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 function! FoldText()
-  let reg='{{'.'{\d\='
+
+  let s:reg='{{'.'{\d\='
+
   for c in split(&commentstring, '%s')
-    let reg = reg.'\|'.escape(c, '*')
+    let s:reg = s:reg.'\|'.escape(c, '*')
   endfor
-  let foldchar = matchstr(&fillchars, 'fold:\zs.')
-  let wlength = min([winwidth(0), 80])
-  let indent = max([indent(v:foldstart), v:foldlevel-1])
-  let nlines = (v:foldend-v:foldstart+1).' lines '
-  let ftext = substitute(getline(v:foldstart), reg,'','g')
-  return repeat(' ', indent) . substitute(ftext, '^\s*\(.\{-}\)\s*$', '\1', '')
-        \ . repeat(foldchar, wlength - strlen(nlines.ftext) - 2 - indent)
-        \ . nlines  . ' ≡'
+
+  let s:foldchar = matchstr(&fillchars, 'fold:\zs.')
+  let s:wlength = min([winwidth(0), 80])
+  let s:indent = max([indent(v:foldstart), v:foldlevel-1])
+  let s:nlines = (v:foldend-v:foldstart+1).' lines '
+  let s:ftext = substitute(getline(v:foldstart), s:reg,'','g')
+
+  return repeat(' ', s:indent) . substitute(s:ftext, '^\s*\(.\{-}\)\s*$', '\1', '')
+        \ . repeat(s:foldchar, s:wlength - strlen(s:nlines.s:ftext) - 2 - s:indent)
+        \ . s:nlines  . ' ≡'
+
 endfunction
 
 set foldtext=FoldText()
+
 if &foldmethod == 'manual'
   set foldmethod=marker
 endif
-let &fcs = substitute(&fcs, 'fold:.', 'fold: ', '')
+
+set fillchars=vert:│,fold:·,diff:-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                                            "

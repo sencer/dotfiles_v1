@@ -4,13 +4,14 @@ Plug 'airblade/vim-gitgutter'
 Plug 'airblade/vim-rooter'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'arecarn/crunch.vim'
-Plug 'arecarn/selection.vim'
-Plug 'bruno-/vim-vertical-move'
+Plug 'arecarn/selection.vim'  " required for crunch
+Plug 'vim-utils/vim-vertical-move'
 Plug 'chrisbra/Colorizer'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'fs111/pydoc.vim'
 Plug 'gioele/vim-autoswap'
-Plug 'idbrii/textobj-word-column.vim'
+Plug 'kana/vim-textobj-user'
+Plug 'reedes/vim-textobj-sentence'
+Plug 'sencer/textobj-word-column.vim'
 Plug 'idbrii/vim-endoscope'
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Plug 'junegunn/fzf.vim'
@@ -21,35 +22,26 @@ Plug 'junegunn/vim-easy-align'
 Plug 'KabbAmine/vCoolor.vim'
 Plug 'kana/vim-niceblock'
 Plug 'kana/vim-repeat'
-Plug 'kana/vim-textobj-user'
-Plug 'kassio/neoterm'
 Plug 'kshenoy/vim-signature'
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-hugefile'
 Plug 'morhetz/gruvbox'
 Plug 'purplep/python-syntax'
-Plug 'radenling/vim-dispatch-neovim'
-Plug 'reedes/vim-textobj-sentence'
+" Plug 'jeetsukumaran/vim-pythonsense'
+" Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'romainl/vim-qf'
+" map copen/lopen to F??
+Plug 'romainl/vim-qlist'
 Plug 'romainl/vim-cool'
-Plug 'roxma/ncm-clang'
-Plug 'roxma/nvim-completion-manager'
-if !has('nvim')
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
 Plug 'rstacruz/vim-closer'
 Plug 'salsifis/vim-transpose'
 Plug 'sencer/abinitio.vim'
-Plug 'sencer/lammps.vim'
 Plug 'sencer/vim-snippets'
 Plug 'sencer/vis'
 Plug 'sencer/wordnet.vim'
-Plug 'Shougo/echodoc.vim'
 Plug 'simnalamburt/vim-mundo'
 Plug 'SirVer/UltiSnips'
-Plug '~/software/vim-eval'
-Plug '~/software/vim-gnuplot'
-Plug '~/software/vim-vmd'
+Plug '/opt/vim-gnuplot'
 Plug 'stefandtw/quickfix-reflector.vim'
 Plug 'tmhedberg/SimpylFold'
 Plug 'tommcdo/vim-exchange'
@@ -62,9 +54,18 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-vinegar'
+Plug 'AdUki/vim-dispatch-neovim'
 Plug 'w0rp/ale'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-ultisnips'
+Plug 'fgrsnau/ncm2-otherbuf'
+Plug 'yuki-ycino/ncm2-dictionary', {'branch': 'ncm2'}
 Plug 'wellle/tmux-complete.vim'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'kassio/neoterm'
 
 call plug#end()
 
@@ -82,7 +83,6 @@ endif
 filetype plugin indent on
 syntax on
 runtime! macros/matchit.vim
-
 " netrw?
 " let loaded_netrwPlugin = 1
 nnoremap cof :Vexplore!<CR>
@@ -104,29 +104,36 @@ let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 let g:UltiSnipsSnippetsDir = "~/.config/nvim/bundle/vim-snippets/UltiSnips"
 let g:UltiSnipsEditSplit = "vertical"
 
-" neoterm
-let g:neoterm_size=10
-let g:neoterm_automap_keys = "<F1>"
-let g:neoterm_autoinsert = 1
-let g:neoterm_fixedsize = 1
+" " neoterm
+nnoremap <F1> :Tnew<CR>
+nmap gs <Plug>(neoterm-repl-send)
+xmap gs <Plug>(neoterm-repl-send)
+nmap gss <Plug>(neoterm-repl-send-line)
+let g:neoterm_default_mod = ':vert rightbelow'
+let g:neoterm_autoscroll = 1
 let g:neoterm_direct_open_repl = 1
-nnoremap <F2> :TREPLSendLine<CR>
-vnoremap <F2> :TREPLSendSelection<CR>
-nnoremap <F3> :TREPLSendFile<CR>
+let g:neoterm_automap_keys = "<Nop>"
 
 " ale
 let g:ale_sign_column_always = 1
 let g:ale_sign_error   = '⚑'
 let g:ale_sign_warning = '⚠'
+
+let g:ale_virtualtext_cursor = 1
+
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_insert_leave = 1
+
+let g:ale_echo_msg_format = '%severity%: %s (%linter%)'
+
 let g:ale_fixers = {
-      \     'python': [
-      \     'autopep8',
-      \     'add_blank_lines_for_python_control_statements',
-      \     'isort',
-      \     'remove_trailing_lines',
-      \     'trim_whitespace'
-      \   ]
-      \ }
+      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+     \ }
+
+" let g:ale_completion_enabled = 0
+
+inoremap <silent> <C-z> <C-\><C-o>:ALEComplete<CR>
+nnoremap <F3> :ALEFix<CR>
 
 " crunch
 let g:crunch_result_type_append = 0
@@ -142,8 +149,8 @@ let g:vcoolor_disable_mappings = 1
 let g:vcoolor_map = '<F5>'
 
 " other
-let g:lmpdoc_path = "/opt/software/lammps/doc/src/"
-let g:echodoc#enable_at_startup = 1
+let g:CoolTotalMatches = 1
+let g:tmux_navigator_disable_when_zoomed = 1
 let g:surround_no_insert_mappings = 1
 let g:rooter_change_directory_for_non_project_files = 'current'
 let g:rooter_use_lcd = 1
@@ -189,6 +196,7 @@ set undolevels=1000
 set undoreload=1000
 
 set directory=~/.dotfiles/tmp/swap
+set updatetime=200
 
 set colorcolumn=81
 set showtabline=1
@@ -208,6 +216,7 @@ set wildignore=*.o,*~,*.sw*
 set wildignorecase
 set thesaurus+=~/.config/nvim/dictionaries/moby
 set dictionary+=/usr/share/dict/words
+set completeopt=noinsert,menuone,noselect
 
 set autoread
 set switchbuf=useopen,usetab
@@ -268,14 +277,18 @@ nnoremap <silent> <Leader>x :x!<CR>
 nnoremap <expr> <Leader>z winnr('$')==1?':tabclose<CR>':':tab split<CR>'
 nnoremap <expr> <Leader>q len(filter(range(1, bufnr('$')), 'buflisted(v:val)'))==1?':q<CR>':':bw<CR>'
 
-nnoremap <silent> [h :GitGutterPrevHunk<CR>
-nnoremap <silent> ]h :GitGutterNextHunk<CR>
+" nnoremap <silent> [h :GitGutterPrevHunk<CR>
+" nnoremap <silent> ]h :GitGutterNextHunk<CR>
 
 nnoremap <Leader>gc :Gcommit<CR>
 nnoremap <Leader>ga :Gcommit --amend<CR>
 nnoremap <Leader>gw :Gwrite<CR>
 nnoremap <Leader>gs :Gstatus<CR>
 nnoremap <Leader>gd :Gdiff<CR>
+
+" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <Cr>    pumvisible() ? "\<C-y>" : "\<Cr>"
 
 command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
@@ -323,7 +336,7 @@ augroup vimrc
         \ compiler python
 
   autocmd vimrc FileType python,tex,latex,vim,tcl
-        \ let b:closer = 1|
+        \ let b:closer = 1 |
         \ let b:closer_flags = '([{'
 
   autocmd vimrc BufWritePost $MYVIMRC source %
@@ -332,18 +345,20 @@ augroup vimrc
         \ setlocal equalprg=asort\ -k1r,4,2,3 |
         \ setlocal formatprg=$HOME/.config/nvim/bin/heuristic-format
 
-  if has('nvim')
-    autocmd vimrc BufRead,BufNewFile * exec ':Tmap '. &makeprg
-  endif
+  autocmd vimrc BufEnter * call ncm2#enable_for_buffer()
+
+  " if has('nvim')
+  "   autocmd vimrc BufRead,BufNewFile * exec ':Tmap '. &makeprg
+  " endif
 
   autocmd vimrc BufReadPost *
         \ if line("'\"") > 1 && line("'\"") <= line("$") |
         \ exe "normal! g`\"" |
         \ endif
 
-  autocmd BufNewFile,BufReadPre /dev/shm/* setl noswapfile nobackup noundofile
+  autocmd vimrc BufNewFile,BufReadPre /dev/shm/* setl noswapfile nobackup noundofile
 
-  au FileType *
+  au vimrc FileType *
         \ if &omnifunc == "" |
         \   setlocal omnifunc=syntaxcomplete#Complete |
         \ endif
